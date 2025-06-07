@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from 'next/image';
 import type { Dish } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,17 +17,6 @@ export default function MenuItemCard({ dish }: MenuItemCardProps) {
 
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg">
-      {dish.imageUrl && (
-        <div className="relative w-full h-48 md:h-56">
-          <Image
-            src={dish.imageUrl}
-            alt={dish.nameEn}
-            layout="fill"
-            objectFit="cover"
-            data-ai-hint={dish.dataAiHint || "food item"}
-          />
-        </div>
-      )}
       <CardHeader className="pb-2">
         <CardTitle className="font-headline text-xl md:text-2xl">{dish.nameEn}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">{dish.nameHi}</CardDescription>
