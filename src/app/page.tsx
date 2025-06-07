@@ -7,7 +7,7 @@ import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA } from '@/lib/constants';
 import type { MenuCategory } from '@/types';
 
-const SCROLL_OFFSET_PRECISION = 0; // px, adjustment for scroll/observer alignment.
+const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
 export default function MenuPage() {
   const menuData: MenuCategory[] = MOCK_MENU_DATA;
