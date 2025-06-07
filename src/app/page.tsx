@@ -1,13 +1,14 @@
 
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA } from '@/lib/constants';
 import type { MenuCategory } from '@/types';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
+import { correctMenuQuery } from '@/ai/flows/correct-menu-query';
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
@@ -15,14 +16,31 @@ export default function MenuPage() {
   const menuData: MenuCategory[] = MOCK_MENU_DATA;
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [aiCorrectedQuery, setAiCorrectedQuery] = useState<string>('');
+  const [isAICorrecting, setIsAICorrecting] = useState(false);
 
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pageHeaderRef = useRef<HTMLElement | null>(null);
-  const stickyHeaderRef = useRef<HTMLDivElement | null>(null); // Renamed from categoryNavRef for clarity
+  const stickyHeaderRef = useRef<HTMLDivElement | null>(null);
+
+  const menuContextString = useMemo(() => {
+    const texts = new Set<string>();
+    menuData.forEach(category => {
+      texts.add(category.nameEn);
+      texts.add(category.nameHi);
+      category.dishes.forEach(dish => {
+        texts.add(dish.nameEn);
+        texts.add(dish.nameHi);
+        if (dish.description) {
+          texts.add(dish.description);
+        }
+      });
+    });
+    return Array.from(texts).join(', ');
+  }, [menuData]);
 
   useEffect(() => {
-    // Populate refs for all categories, regardless of search, as sections are always rendered
     menuData.forEach(category => {
       categoryRefs.current[category.id] = document.getElementById(category.id);
     });
@@ -35,10 +53,39 @@ export default function MenuPage() {
   }, [menuData, activeCategoryId]);
 
   useEffect(() => {
+    const debouncedSearch = async () => {
+      if (!searchQuery.trim()) {
+        setAiCorrectedQuery('');
+        setIsAICorrecting(false);
+        return;
+      }
+      setIsAICorrecting(true);
+      try {
+        const result = await correctMenuQuery({ query: searchQuery, menuContext: menuContextString });
+        setAiCorrectedQuery(result.correctedQuery || searchQuery);
+      } catch (error) {
+        console.error("AI query correction error:", error);
+        setAiCorrectedQuery(searchQuery); // Fallback to original query on error
+      } finally {
+        setIsAICorrecting(false);
+      }
+    };
+
+    const timeoutId = setTimeout(debouncedSearch, 500); // 500ms debounce
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, menuContextString]);
+
+  const finalSearchQuery = useMemo(() => {
+    if (!searchQuery.trim()) return '';
+    return aiCorrectedQuery || searchQuery;
+  }, [searchQuery, aiCorrectedQuery]);
+
+
+  useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
-    const siteHeader = document.querySelector('header'); // Main site header from layout
-    const currentStickyHeader = stickyHeaderRef.current; // The combined sticky header (search + nav)
+    const siteHeader = document.querySelector('header');
+    const currentStickyHeader = stickyHeaderRef.current;
 
     let rootMarginTop = 0;
     if (siteHeader) rootMarginTop += siteHeader.offsetHeight;
@@ -47,37 +94,29 @@ export default function MenuPage() {
     const observerOptions = {
       root: null,
       rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`,
-      threshold: 0.01, 
+      threshold: 0.01,
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
-        // Sort by their top position to pick the one closest to the top edge of the viewport
-        visibleEntries.sort((a, b) => {
-          const topA = a.boundingClientRect.top;
-          const topB = b.boundingClientRect.top;
-          return topA - topB;
-        });
+        visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         setActiveCategoryId(visibleEntries[0].target.id);
       }
     }, observerOptions);
 
     const currentObserver = observerRef.current;
-    // Observe all category sections that are part of menuData
     Object.values(categoryRefs.current).forEach(ref => {
       if (ref) currentObserver.observe(ref);
     });
 
     return () => {
-      if (currentObserver) {
-        currentObserver.disconnect();
-      }
+      if (currentObserver) currentObserver.disconnect();
     };
-  }, [menuData, stickyHeaderRef, searchQuery]); // Re-run if searchQuery changes, in case it affects layout causing height changes
+  }, [menuData, stickyHeaderRef, finalSearchQuery]);
 
   const handleCategorySelect = (categoryId: string) => {
-    setActiveCategoryId(categoryId); 
+    setActiveCategoryId(categoryId);
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header');
@@ -97,8 +136,8 @@ export default function MenuPage() {
   };
 
   const hasAnyResults = useMemo(() => {
-    if (!searchQuery.trim()) return true; // If no search, assume results exist
-    const normalizedQuery = searchQuery.toLowerCase().trim();
+    if (!finalSearchQuery.trim()) return true;
+    const normalizedQuery = finalSearchQuery.toLowerCase().trim();
     return menuData.some(category =>
       category.dishes.some(dish =>
         dish.nameEn.toLowerCase().includes(normalizedQuery) ||
@@ -106,7 +145,7 @@ export default function MenuPage() {
         (dish.description && dish.description.toLowerCase().includes(normalizedQuery))
       )
     );
-  }, [searchQuery, menuData]);
+  }, [finalSearchQuery, menuData]);
 
   return (
     <div className="space-y-8">
@@ -115,8 +154,8 @@ export default function MenuPage() {
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
 
-      <div 
-        ref={stickyHeaderRef} 
+      <div
+        ref={stickyHeaderRef}
         className="sticky top-16 z-40 bg-card shadow-md p-4 space-y-4 rounded-b-lg"
       >
         <div className="relative">
@@ -129,7 +168,15 @@ export default function MenuPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search menu items"
           />
+          {isAICorrecting && (
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-spin" />
+          )}
         </div>
+        {searchQuery.trim() && !isAICorrecting && aiCorrectedQuery && searchQuery.toLowerCase() !== aiCorrectedQuery.toLowerCase() && (
+          <p className="text-xs text-muted-foreground text-center">
+            Showing results for "<strong>{aiCorrectedQuery}</strong>" (corrected from "{searchQuery}")
+          </p>
+        )}
         {menuData.length > 0 && (
           <CategoryNavigationBar
             categories={menuData}
@@ -140,17 +187,19 @@ export default function MenuPage() {
       </div>
 
       <div className="space-y-12">
-        {searchQuery.trim() && !hasAnyResults ? (
+        {finalSearchQuery.trim() && !hasAnyResults && !isAICorrecting ? (
           <div className="text-center py-12">
             <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
-            <p className="text-xl text-muted-foreground">No menu items match your search: "{searchQuery}"</p>
+            <p className="text-xl text-muted-foreground">No menu items match your search for: "{searchQuery}"
+              {aiCorrectedQuery && searchQuery.toLowerCase() !== aiCorrectedQuery.toLowerCase() && ` (tried "${aiCorrectedQuery}")`}
+            </p>
           </div>
         ) : (
           menuData.map((category) => (
             <MenuCategorySection
               key={category.id}
               category={category}
-              searchQuery={searchQuery}
+              searchQueryToFilter={finalSearchQuery} // Use the corrected query for filtering
             />
           ))
         )}

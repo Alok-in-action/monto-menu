@@ -5,37 +5,31 @@ import { useMemo } from 'react';
 
 interface MenuCategorySectionProps {
   category: MenuCategoryType;
-  searchQuery?: string;
+  searchQueryToFilter?: string; // Renamed to reflect its purpose
 }
 
-export default function MenuCategorySection({ category, searchQuery }: MenuCategorySectionProps) {
+export default function MenuCategorySection({ category, searchQueryToFilter }: MenuCategorySectionProps) {
   const IconComponent = category.icon;
 
   const displayedDishes = useMemo(() => {
-    if (!searchQuery || searchQuery.trim() === '') {
+    if (!searchQueryToFilter || searchQueryToFilter.trim() === '') {
       return category.dishes;
     }
-    const normalizedQuery = searchQuery.toLowerCase().trim();
+    const normalizedQuery = searchQueryToFilter.toLowerCase().trim();
     return category.dishes.filter(dish =>
       dish.nameEn.toLowerCase().includes(normalizedQuery) ||
       dish.nameHi.toLowerCase().includes(normalizedQuery) ||
       (dish.description && dish.description.toLowerCase().includes(normalizedQuery))
     );
-  }, [category.dishes, searchQuery]);
+  }, [category.dishes, searchQueryToFilter]);
 
-  // Only render the section if it has dishes to display after filtering or if no search is active
-  if (searchQuery && searchQuery.trim() !== '' && displayedDishes.length === 0) {
-    // If there's an active search and this category has no matching dishes, 
-    // we can choose to render nothing for this section, or render the title with a message.
-    // For now, let's not render the section at all to avoid empty category titles during search.
-    // The global "No results" message in page.tsx will handle cases where no categories have matches.
-    // However, to keep the scroll-spy working with all category IDs, we must render the section.
-    // So, we'll render the title and a specific message.
+  if (searchQueryToFilter && searchQueryToFilter.trim() !== '' && displayedDishes.length === 0) {
+    // If there's an active search and this category has no matching dishes,
+    // we still render the section container for scroll-spy, but with a message.
   }
 
-
   return (
-    <section id={category.id} className="mb-12 scroll-mt-32 md:scroll-mt-48"> {/* scroll-mt accounts for sticky headers */}
+    <section id={category.id} className="mb-12 scroll-mt-32 md:scroll-mt-48">
       <div className="flex items-center mb-6">
         {IconComponent && <IconComponent className="h-8 w-8 mr-3 text-primary" />}
         <div>
@@ -49,8 +43,8 @@ export default function MenuCategorySection({ category, searchQuery }: MenuCateg
             <MenuItemCard key={dish.id} dish={dish} />
           ))}
         </div>
-      ) : searchQuery && searchQuery.trim() !== '' ? (
-        <p className="text-muted-foreground italic">No items in this category match your search: "{searchQuery}"</p>
+      ) : searchQueryToFilter && searchQueryToFilter.trim() !== '' ? (
+        <p className="text-muted-foreground italic">No items in this category match your search: "{searchQueryToFilter}"</p>
       ) : (
         <p className="text-muted-foreground">No items in this category yet.</p>
       )}
