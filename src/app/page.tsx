@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import Image from 'next/image'; // Import next/image
+import Image from 'next/image';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL, APP_NAME } from '@/lib/constants';
@@ -24,6 +24,8 @@ export default function MenuPage() {
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
   const pageHeaderRef = useRef<HTMLElement | null>(null);
   const categoryNavWrapperRef = useRef<HTMLDivElement | null>(null);
+  const isProgrammaticScroll = useRef(false);
+  const scrollTimeoutId = useRef<NodeJS.Timeout | null>(null);
 
 
   useEffect(() => {
@@ -103,7 +105,11 @@ export default function MenuPage() {
 
 
   useEffect(() => {
-    if (isLoadingMenu || menuData.length === 0) return;
+    if (isLoadingMenu || menuData.length === 0) return () => {
+      if (scrollTimeoutId.current) {
+        clearTimeout(scrollTimeoutId.current);
+      }
+    };
 
     const siteHeader = document.querySelector('header[data-site-header="true"]');
     const currentCategoryNavWrapper = categoryNavWrapperRef.current;
@@ -115,15 +121,16 @@ export default function MenuPage() {
     const observerOptions = {
       root: null,
       rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`,
-      threshold: 0.01, // Lower threshold for earlier detection
+      threshold: 0.01,
     };
 
     const observer = new IntersectionObserver((entries) => {
+      if (isProgrammaticScroll.current) {
+        return;
+      }
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
-        // Sort by vertical position on screen to pick the "topmost" visible one
         visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        // Only update if the new active ID is different
         if (activeCategoryId !== visibleEntries[0].target.id) {
             setActiveCategoryId(visibleEntries[0].target.id);
         }
@@ -136,13 +143,22 @@ export default function MenuPage() {
 
     return () => {
       observer.disconnect();
+      if (scrollTimeoutId.current) {
+        clearTimeout(scrollTimeoutId.current);
+      }
     };
-  // Removed activeCategoryId from dependencies to prevent observer re-init on programmatic change
-  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting]);
+  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting, activeCategoryId]);
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
-    setActiveCategoryId(categoryId); // Set active category immediately for UI feedback
+    if (scrollTimeoutId.current) {
+      clearTimeout(scrollTimeoutId.current);
+      scrollTimeoutId.current = null;
+    }
+
+    isProgrammaticScroll.current = true;
+    setActiveCategoryId(categoryId); 
+    
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
@@ -158,8 +174,15 @@ export default function MenuPage() {
         top: offsetPosition,
         behavior: 'smooth'
       });
+
+      scrollTimeoutId.current = setTimeout(() => {
+        isProgrammaticScroll.current = false;
+        scrollTimeoutId.current = null; 
+      }, 700); 
+    } else {
+      isProgrammaticScroll.current = false; 
     }
-  }, [setActiveCategoryId, categoryNavWrapperRef, isLoadingMenu, finalSearchQuery, isAICorrecting]); // Dependencies reflect what affects offset calculation
+  }, [setActiveCategoryId, categoryNavWrapperRef, isLoadingMenu, finalSearchQuery, isAICorrecting]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -254,3 +277,4 @@ export default function MenuPage() {
     </div>
   );
 }
+    
