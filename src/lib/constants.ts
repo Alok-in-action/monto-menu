@@ -44,6 +44,18 @@ export const CATEGORY_ICONS: { [key: string]: React.ElementType } = {
 
 export const PLACEHOLDER_IMAGE_URL = 'https://placehold.co/600x400.png';
 
+export const WATER_BOTTLE_DISH: Dish = {
+  id: 'water-bottle-auto-001',
+  nameEn: 'Mineral Water Bottle',
+  nameHi: 'मिनरल वाटर बोतल',
+  price: 20.00,
+  category: 'essentials', // This category won't be displayed in the main menu
+  description: 'Chilled and refreshing mineral water.',
+  imageUrl: PLACEHOLDER_IMAGE_URL,
+  isVegetarian: true,
+  dataAiHint: 'water bottle',
+};
+
 const slugify = (text: string) => text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '');
 
 const generateDishId = (categorySlug: string, dishNameEn: string) => {
@@ -635,3 +647,4 @@ export const MOCK_ORDERS_DATA: OrderType[] = [
 export const INR_CURRENCY_CODE = 'INR';
 export const INR_SYMBOL = '₹';
     
+
