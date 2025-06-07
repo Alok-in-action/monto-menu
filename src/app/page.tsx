@@ -96,13 +96,15 @@ export default function MenuPage() {
 
   return (
     <div className="space-y-8">
-      <header className="text-center mb-6" ref={pageHeaderRef}>
+      <header className="text-center" ref={pageHeaderRef}> {/* Removed mb-6, space-y-8 will handle */}
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
 
       {menuData.length > 0 && (
-        <div ref={categoryNavRef} className="mb-6"> {/* Wrapper for category nav ref */}
+        // This div acts as a placeholder for the sticky CategoryNavigationBar
+        // Height = 6rem (button) + 1.5rem (padding in ScrollArea's child) + 2px (border of ScrollArea)
+        <div ref={categoryNavRef} className="h-[calc(7.5rem+2px)]"> 
           <CategoryNavigationBar
             categories={menuData}
             selectedCategoryId={activeCategoryId}
