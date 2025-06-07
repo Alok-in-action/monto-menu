@@ -2,7 +2,8 @@
 "use client";
 
 import Link from 'next/link';
-import { UtensilsCrossed, ShoppingCart, ListOrdered } from 'lucide-react';
+import Image from 'next/image'; // Import next/image
+import { ShoppingCart, ListOrdered } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartIndicator from '@/components/cart/CartIndicator';
 import { APP_NAME } from '@/lib/constants';
@@ -41,7 +42,8 @@ export default function SiteHeader() {
     >
       <div className="container flex h-full items-center justify-between"> {/* Use h-full */}
         <Link href="/" className="flex items-center space-x-2 text-primary hover:opacity-80 transition-opacity">
-          <UtensilsCrossed className="h-8 w-8" />
+          {/* Replace UtensilsCrossed icon with the Image component */}
+          <Image src="/logo.png" alt={`${APP_NAME} Logo`} width={32} height={32} className="h-8 w-8" />
           <span className="font-headline font-bold text-2xl">{APP_NAME}</span>
         </Link>
         
