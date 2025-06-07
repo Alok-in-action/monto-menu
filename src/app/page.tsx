@@ -1,23 +1,28 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA } from '@/lib/constants';
 import type { MenuCategory } from '@/types';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
 export default function MenuPage() {
   const menuData: MenuCategory[] = MOCK_MENU_DATA;
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pageHeaderRef = useRef<HTMLElement | null>(null);
-  const categoryNavRef = useRef<HTMLDivElement | null>(null);
+  const stickyHeaderRef = useRef<HTMLDivElement | null>(null); // Renamed from categoryNavRef for clarity
 
   useEffect(() => {
+    // Populate refs for all categories, regardless of search, as sections are always rendered
     menuData.forEach(category => {
       categoryRefs.current[category.id] = document.getElementById(category.id);
     });
@@ -32,28 +37,34 @@ export default function MenuPage() {
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
-    const siteHeader = document.querySelector('header'); // Main site header
-    const categoryNavBarElement = categoryNavRef.current; // The sticky div for CategoryNavigationBar
+    const siteHeader = document.querySelector('header'); // Main site header from layout
+    const currentStickyHeader = stickyHeaderRef.current; // The combined sticky header (search + nav)
 
     let rootMarginTop = 0;
     if (siteHeader) rootMarginTop += siteHeader.offsetHeight;
-    if (categoryNavBarElement) rootMarginTop += categoryNavBarElement.offsetHeight;
+    if (currentStickyHeader) rootMarginTop += currentStickyHeader.offsetHeight;
 
     const observerOptions = {
-      root: null, // observing intersections relative to the viewport
+      root: null,
       rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`,
-      threshold: 0.01, // How much of the element needs to be visible (close to 0 means as soon as it enters)
+      threshold: 0.01, 
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
-        visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        // Sort by their top position to pick the one closest to the top edge of the viewport
+        visibleEntries.sort((a, b) => {
+          const topA = a.boundingClientRect.top;
+          const topB = b.boundingClientRect.top;
+          return topA - topB;
+        });
         setActiveCategoryId(visibleEntries[0].target.id);
       }
     }, observerOptions);
 
     const currentObserver = observerRef.current;
+    // Observe all category sections that are part of menuData
     Object.values(categoryRefs.current).forEach(ref => {
       if (ref) currentObserver.observe(ref);
     });
@@ -63,17 +74,17 @@ export default function MenuPage() {
         currentObserver.disconnect();
       }
     };
-  }, [menuData, categoryNavRef]); // Rerun if menuData or categoryNavRef changes (or its offsetHeight changes)
+  }, [menuData, stickyHeaderRef, searchQuery]); // Re-run if searchQuery changes, in case it affects layout causing height changes
 
   const handleCategorySelect = (categoryId: string) => {
-    setActiveCategoryId(categoryId); // Immediately update active state for responsiveness
+    setActiveCategoryId(categoryId); 
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header');
-      const categoryNavBarElement = categoryNavRef.current; // The sticky div
+      const currentStickyHeader = stickyHeaderRef.current;
       let offset = 0;
       if (siteHeader) offset += siteHeader.offsetHeight;
-      if (categoryNavBarElement) offset += categoryNavBarElement.offsetHeight;
+      if (currentStickyHeader) offset += currentStickyHeader.offsetHeight;
 
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - offset - SCROLL_OFFSET_PRECISION;
@@ -85,6 +96,18 @@ export default function MenuPage() {
     }
   };
 
+  const hasAnyResults = useMemo(() => {
+    if (!searchQuery.trim()) return true; // If no search, assume results exist
+    const normalizedQuery = searchQuery.toLowerCase().trim();
+    return menuData.some(category =>
+      category.dishes.some(dish =>
+        dish.nameEn.toLowerCase().includes(normalizedQuery) ||
+        dish.nameHi.toLowerCase().includes(normalizedQuery) ||
+        (dish.description && dish.description.toLowerCase().includes(normalizedQuery))
+      )
+    );
+  }, [searchQuery, menuData]);
+
   return (
     <div className="space-y-8">
       <header className="text-center" ref={pageHeaderRef}>
@@ -92,26 +115,45 @@ export default function MenuPage() {
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
 
-      {menuData.length > 0 && (
-        <div
-          ref={categoryNavRef}
-          className="sticky top-16 z-40 bg-card shadow" // This div is now sticky
-        >
+      <div 
+        ref={stickyHeaderRef} 
+        className="sticky top-16 z-40 bg-card shadow-md p-4 space-y-4 rounded-b-lg"
+      >
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search menu items (e.g., Dosa, Paneer, Noodles)..."
+            className="pl-10 w-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search menu items"
+          />
+        </div>
+        {menuData.length > 0 && (
           <CategoryNavigationBar
             categories={menuData}
             selectedCategoryId={activeCategoryId}
             onCategorySelect={handleCategorySelect}
           />
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="space-y-12">
-        {menuData.map((category) => (
-          <MenuCategorySection
-            key={category.id}
-            category={category}
-          />
-        ))}
+        {searchQuery.trim() && !hasAnyResults ? (
+          <div className="text-center py-12">
+            <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
+            <p className="text-xl text-muted-foreground">No menu items match your search: "{searchQuery}"</p>
+          </div>
+        ) : (
+          menuData.map((category) => (
+            <MenuCategorySection
+              key={category.id}
+              category={category}
+              searchQuery={searchQuery}
+            />
+          ))
+        )}
       </div>
     </div>
   );
