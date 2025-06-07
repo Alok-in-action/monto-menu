@@ -20,15 +20,15 @@ export const CATEGORY_ICONS: { [key: string]: React.ElementType } = {
   'Chinese Main Course': Utensils,
   'Chinese Starters': Sparkles,
   'Tandoor Starters': Flame,
-  'Paneer ka Kamal': CookingPot, // New category icon
+  'Paneer ka Kamal': CookingPot,
   'Punjab Ka Dhamaka (Veg Specials)': CookingPot,
-  'Kaju Special': Nut,
+  'Kaju ka Khazana': Nut, // Renamed from 'Kaju Special'
   'Kofta': Vegan,
-  'Roti, Paratha, Naan & Kulcha': Wheat,
+  'Mitti Ki Khushbu Roti': Wheat, // Renamed from 'Roti, Paratha, Naan & Kulcha'
   'Tava Roti': Wheat,
   'South Indian Fancy Dosa': Disc3,
-  'Dal': Container,
-  'Rice & Biryani': Utensils,
+  'Kuch ke Kuch Saath': Container, // Renamed from 'Dal'
+  'Basmati Ka Swad Rice': Utensils, // Renamed from 'Rice & Biryani'
   'Mozzarella Pizza': Pizza,
   'Toast Sandwich': Sandwich,
   'Pav Bhaji': CookingPot,
@@ -222,27 +222,28 @@ let MOCK_MENU_DATA_TEMP: MenuCategory[] = [
     nameEn: 'Tandoor Starters',
     nameHi: 'तंदूर स्टार्टर्स',
     icon: CATEGORY_ICONS['Tandoor Starters'],
-    dishes: [ // Dishes will be populated dynamically
+    dishes: [ 
+      // Dishes will be populated by the logic below, ending at Achari Tikka Dry
     ]
   },
-  // Placeholder for the new "Paneer ka Kamal" category, to be inserted dynamically
+  // Paneer ka Kamal will be inserted here by the logic below
   {
-    id: slugify('Kaju Special'),
-    nameEn: 'Kaju Special',
-    nameHi: 'काजू स्पेशल',
-    icon: CATEGORY_ICONS['Kaju Special'],
+    id: slugify('Kaju ka Khazana'), // Renamed
+    nameEn: 'Kaju ka Khazana', // Renamed
+    nameHi: 'काजू का खजाना', // Renamed
+    icon: CATEGORY_ICONS['Kaju ka Khazana'], // Updated key
     dishes: [
-      { id: generateDishId(slugify('Kaju Special'), 'Fry Kaju Kasturi Methi'), nameEn: 'Fry Kaju Kasturi Methi', nameHi: 'फ्राय काजु कस्तुरी मैथी', price: 225, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju kasturi methi' },
-      { id: generateDishId(slugify('Kaju Special'), 'Fry Kaju Handi'), nameEn: 'Fry Kaju Handi', nameHi: 'फ्राय काजु हांडी', price: 210, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju handi' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Cheese Paneer Masala'), nameEn: 'Kaju Cheese Paneer Masala', nameHi: 'काजु चीज पनीर मसाला', price: 245, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju cheese paneer' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Cheese Masala'), nameEn: 'Kaju Cheese Masala', nameHi: 'काजु चीज मसाला', price: 230, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju cheese masala' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Curry'), nameEn: 'Kaju Curry', nameHi: 'काजु करी', price: 200, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju curry' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Butter Masala'), nameEn: 'Kaju Butter Masala', nameHi: 'काजु बटर मसाला', price: 205, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju butter masala' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Masala'), nameEn: 'Kaju Masala', nameHi: 'काजु मसाला', price: 195, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju masala' },
-      { id: generateDishId(slugify('Kaju Special'), 'Kaju Handi'), nameEn: 'Kaju Handi', nameHi: 'काजु हांडी', price: 200, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju handi plain' },
-      { id: generateDishId(slugify('Kaju Special'), 'Cheese Paneer Masala'), nameEn: 'Cheese Paneer Masala', nameHi: 'चीज पनीर मसाला', price: 220, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese paneer masala' },
-      { id: generateDishId(slugify('Kaju Special'), 'Cheese Butter Masala'), nameEn: 'Cheese Butter Masala', nameHi: 'चीज बटर मसाला', price: 220, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese butter masala' },
-      { id: generateDishId(slugify('Kaju Special'), 'Khoya Kaju'), nameEn: 'Khoya Kaju', nameHi: 'खोया काजु', price: 210, category: slugify('Kaju Special'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'khoya kaju' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Fry Kaju Kasturi Methi'), nameEn: 'Fry Kaju Kasturi Methi', nameHi: 'फ्राय काजु कस्तुरी मैथी', price: 225, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju kasturi methi' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Fry Kaju Handi'), nameEn: 'Fry Kaju Handi', nameHi: 'फ्राय काजु हांडी', price: 210, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju handi' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Cheese Paneer Masala'), nameEn: 'Kaju Cheese Paneer Masala', nameHi: 'काजु चीज पनीर मसाला', price: 245, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju cheese paneer' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Cheese Masala'), nameEn: 'Kaju Cheese Masala', nameHi: 'काजु चीज मसाला', price: 230, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju cheese masala' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Curry'), nameEn: 'Kaju Curry', nameHi: 'काजु करी', price: 200, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju curry' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Butter Masala'), nameEn: 'Kaju Butter Masala', nameHi: 'काजु बटर मसाला', price: 205, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju butter masala' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Masala'), nameEn: 'Kaju Masala', nameHi: 'काजु मसाला', price: 195, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju masala' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Kaju Handi'), nameEn: 'Kaju Handi', nameHi: 'काजु हांडी', price: 200, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju handi plain' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Cheese Paneer Masala'), nameEn: 'Cheese Paneer Masala', nameHi: 'चीज पनीर मसाला', price: 220, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese paneer masala' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Cheese Butter Masala'), nameEn: 'Cheese Butter Masala', nameHi: 'चीज बटर मसाला', price: 220, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese butter masala' },
+      { id: generateDishId(slugify('Kaju ka Khazana'), 'Khoya Kaju'), nameEn: 'Khoya Kaju', nameHi: 'खोया काजु', price: 210, category: slugify('Kaju ka Khazana'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'khoya kaju' },
     ],
   },
   {
@@ -292,38 +293,38 @@ let MOCK_MENU_DATA_TEMP: MenuCategory[] = [
       { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Dahi Tikhari'), nameEn: 'Dahi Tikhari', nameHi: 'दही टिकारी', price: 160, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dahi tikhari' },
       { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Aloo Do Pyaja'), nameEn: 'Aloo Do Pyaja', nameHi: 'आलू दो प्याजा', price: 195, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'aloo do pyaza' },
       { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Save Masala'), nameEn: 'Save Masala', nameHi: 'सेव मसाला', price: 110, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'sev masala' },
-      { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Mushroom Masala'), nameEn: 'Mushroom Masala', nameHi: 'मशरूम मसाला', price: 210, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'mushroom masala' },
+      { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Mushroom Masala'), nameEn: 'Mushroom Masala', nameHi: 'मशरूम मसाला', price: 195, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'mushroom masala' }, // Price changed
       { id: generateDishId(slugify('Punjab Ka Dhamaka (Veg Specials)'), 'Mathi Malai Mutter'), nameEn: 'Mathi Malai Mutter', nameHi: 'मैथी मलाई मटर', price: 210, category: slugify('Punjab Ka Dhamaka (Veg Specials)'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'methi malai matar' },
     ],
   },
   {
-    id: slugify('Roti, Paratha, Naan & Kulcha'),
-    nameEn: 'Roti, Paratha, Naan & Kulcha',
-    nameHi: 'रोटी, पराठा, नान & कुल्चा',
-    icon: CATEGORY_ICONS['Roti, Paratha, Naan & Kulcha'],
+    id: slugify('Mitti Ki Khushbu Roti'), // Renamed
+    nameEn: 'Mitti Ki Khushbu Roti', // Renamed
+    nameHi: 'मिट्टी की खुशबु रोटी', // Renamed
+    icon: CATEGORY_ICONS['Mitti Ki Khushbu Roti'], // Updated key
     dishes: [
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Plain Roti'), nameEn: 'Plain Roti', nameHi: 'सादी रोटी', price: 18, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain roti' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Roti'), nameEn: 'Butter Roti', nameHi: 'मक्खन रोटी', price: 20, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter roti' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Plain Paratha'), nameEn: 'Plain Paratha', nameHi: 'साद पराठा', price: 30, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Paratha'), nameEn: 'Butter Paratha', nameHi: 'मक्खन पराठा', price: 35, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Plain Naan'), nameEn: 'Plain Naan', nameHi: 'सादा नान', price: 35, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Naan'), nameEn: 'Butter Naan', nameHi: 'मक्खन नान', price: 45, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Missi Roti'), nameEn: 'Missi Roti', nameHi: 'मिसी रोटी', price: 38, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'missi roti' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Garlic Naan'), nameEn: 'Garlic Naan', nameHi: 'लहसुन नान', price: 70, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'garlic naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Aloo Paratha'), nameEn: 'Aloo Paratha', nameHi: 'आलू पराठा', price: 60, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'aloo paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Paneer Paratha'), nameEn: 'Paneer Paratha', nameHi: 'पनीर पराठा', price: 75, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Onion Paratha'), nameEn: 'Onion Paratha', nameHi: 'प्याज पराठा', price: 50, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'onion paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Plain Kulcha'), nameEn: 'Plain Kulcha', nameHi: 'सादा कुल्छा', price: 40, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain kulcha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Kulcha'), nameEn: 'Butter Kulcha', nameHi: 'मक्खन कुल्छा', price: 47, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter kulcha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Masala Kulcha'), nameEn: 'Masala Kulcha', nameHi: 'मसाला कुल्छा', price: 62, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala kulcha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Cheese Naan'), nameEn: 'Cheese Naan', nameHi: 'चीज नान', price: 85, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Cheese Garlic Naan'), nameEn: 'Cheese Garlic Naan', nameHi: 'चीज लहसुन नान', price: 95, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese garlic naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Cheese Paratha'), nameEn: 'Cheese Paratha', nameHi: 'चीज पराठा', price: 80, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Lachha Paratha'), nameEn: 'Lachha Paratha', nameHi: 'लच्छा पराठा', price: 42, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'lachha paratha' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Chilly Garlic Naan'), nameEn: 'Chilly Garlic Naan', nameHi: 'चिल्ली लहसुन नान', price: 78, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'chilly garlic naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Chilly Naan'), nameEn: 'Chilly Naan', nameHi: 'चिल्ली नान', price: 50, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'chilly naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Stuff Naan'), nameEn: 'Stuff Naan', nameHi: 'स्टफ नान', price: 88, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'stuff naan' },
-      { id: generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Stuff Paratha'), nameEn: 'Stuff Paratha', nameHi: 'स्टफ पराठा', price: 80, category: slugify('Roti, Paratha, Naan & Kulcha'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'stuff paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Plain Roti'), nameEn: 'Plain Roti', nameHi: 'सादी रोटी', price: 18, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain roti' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Butter Roti'), nameEn: 'Butter Roti', nameHi: 'मक्खन रोटी', price: 20, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter roti' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Plain Paratha'), nameEn: 'Plain Paratha', nameHi: 'साद पराठा', price: 30, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Butter Paratha'), nameEn: 'Butter Paratha', nameHi: 'मक्खन पराठा', price: 35, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Plain Naan'), nameEn: 'Plain Naan', nameHi: 'सादा नान', price: 35, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Butter Naan'), nameEn: 'Butter Naan', nameHi: 'मक्खन नान', price: 45, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Missi Roti'), nameEn: 'Missi Roti', nameHi: 'मिसी रोटी', price: 38, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'missi roti' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Garlic Naan'), nameEn: 'Garlic Naan', nameHi: 'लहसुन नान', price: 70, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'garlic naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Aloo Paratha'), nameEn: 'Aloo Paratha', nameHi: 'आलू पराठा', price: 60, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'aloo paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Paneer Paratha'), nameEn: 'Paneer Paratha', nameHi: 'पनीर पराठा', price: 75, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Onion Paratha'), nameEn: 'Onion Paratha', nameHi: 'प्याज पराठा', price: 50, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'onion paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Plain Kulcha'), nameEn: 'Plain Kulcha', nameHi: 'सादा कुल्छा', price: 40, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain kulcha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Butter Kulcha'), nameEn: 'Butter Kulcha', nameHi: 'मक्खन कुल्छा', price: 47, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'butter kulcha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Masala Kulcha'), nameEn: 'Masala Kulcha', nameHi: 'मसाला कुल्छा', price: 62, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala kulcha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Cheese Naan'), nameEn: 'Cheese Naan', nameHi: 'चीज नान', price: 85, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Cheese Garlic Naan'), nameEn: 'Cheese Garlic Naan', nameHi: 'चीज लहसुन नान', price: 95, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese garlic naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Cheese Paratha'), nameEn: 'Cheese Paratha', nameHi: 'चीज पराठा', price: 80, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'cheese paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Lachha Paratha'), nameEn: 'Lachha Paratha', nameHi: 'लच्छा पराठा', price: 42, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'lachha paratha' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Chilly Garlic Naan'), nameEn: 'Chilly Garlic Naan', nameHi: 'चिल्ली लहसुन नान', price: 78, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'chilly garlic naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Chilly Naan'), nameEn: 'Chilly Naan', nameHi: 'चिल्ली नान', price: 50, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'chilly naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Stuff Naan'), nameEn: 'Stuff Naan', nameHi: 'स्टफ नान', price: 88, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'stuff naan' },
+      { id: generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Stuff Paratha'), nameEn: 'Stuff Paratha', nameHi: 'स्टफ पराठा', price: 80, category: slugify('Mitti Ki Khushbu Roti'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'stuff paratha' },
     ],
   },
   {
@@ -371,37 +372,37 @@ let MOCK_MENU_DATA_TEMP: MenuCategory[] = [
     ],
   },
   {
-    id: slugify('Dal'),
-    nameEn: 'Dal',
-    nameHi: 'दाल',
-    icon: CATEGORY_ICONS['Dal'],
+    id: slugify('Kuch ke Kuch Saath'), // Renamed
+    nameEn: 'Kuch ke Kuch Saath', // Renamed
+    nameHi: 'कुछ के कुछ साथ', // Renamed
+    icon: CATEGORY_ICONS['Kuch ke Kuch Saath'], // Updated key
     dishes: [
-      { id: generateDishId(slugify('Dal'), 'Dal Makhani'), nameEn: 'Dal Makhani', nameHi: 'दाल मखनी', price: 135, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal makhani' },
-      { id: generateDishId(slugify('Dal'), 'Dal Tadka'), nameEn: 'Dal Tadka', nameHi: 'दाल तड़का', price: 122, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal tadka' },
-      { id: generateDishId(slugify('Dal'), 'Dal Fry'), nameEn: 'Dal Fry', nameHi: 'दाल फ्राय', price: 117, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal fry' },
-      { id: generateDishId(slugify('Dal'), 'Dal Fry Butter'), nameEn: 'Dal Fry Butter', nameHi: 'दाल फ्राय बटर', price: 120, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal fry butter' },
-      { id: generateDishId(slugify('Dal'), 'Dal Khatti Mithi'), nameEn: 'Dal Khatti Mithi', nameHi: 'दाल खट्टी मिठी', price: 118, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'khatti meethi dal' },
-      { id: generateDishId(slugify('Dal'), 'Dal Tadka Butter'), nameEn: 'Dal Tadka Butter', nameHi: 'दाल तड़का बटर', price: 125, category: slugify('Dal'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal tadka butter' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Makhani'), nameEn: 'Dal Makhani', nameHi: 'दाल मखनी', price: 135, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal makhani' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Tadka'), nameEn: 'Dal Tadka', nameHi: 'दाल तड़का', price: 122, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal tadka' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Fry'), nameEn: 'Dal Fry', nameHi: 'दाल फ्राय', price: 117, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal fry' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Fry Butter'), nameEn: 'Dal Fry Butter', nameHi: 'दाल फ्राय बटर', price: 120, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal fry butter' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Khatti Mithi'), nameEn: 'Dal Khatti Mithi', nameHi: 'दाल खट्टी मिठी', price: 118, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'khatti meethi dal' },
+      { id: generateDishId(slugify('Kuch ke Kuch Saath'), 'Dal Tadka Butter'), nameEn: 'Dal Tadka Butter', nameHi: 'दाल तड़का बटर', price: 125, category: slugify('Kuch ke Kuch Saath'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dal tadka butter' },
     ],
   },
   {
-    id: slugify('Rice & Biryani'),
-    nameEn: 'Rice & Biryani',
-    nameHi: 'चावल & बिरयानी',
-    icon: CATEGORY_ICONS['Rice & Biryani'],
+    id: slugify('Basmati Ka Swad Rice'), // Renamed
+    nameEn: 'Basmati Ka Swad Rice', // Renamed
+    nameHi: 'बासमती का स्वाद चावल', // Renamed
+    icon: CATEGORY_ICONS['Basmati Ka Swad Rice'], // Updated key
     dishes: [
-      { id: generateDishId(slugify('Rice & Biryani'), 'S.P. Veg Monto Biriyani'), nameEn: 'S.P. Veg Monto Biriyani', nameHi: 'स्पेशल वेज मोन्टो बिरयानी', price: 190, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg biryani' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Dum Biriyani'), nameEn: 'Dum Biriyani', nameHi: 'दम बिरयानी', price: 170, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dum biryani' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Hyderabadi Biriyani'), nameEn: 'Hyderabadi Biriyani', nameHi: 'हैदराबादी बिरयानी', price: 165, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'hyderabadi biryani' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Veg Biriyani'), nameEn: 'Veg Biriyani', nameHi: 'वेज बिरयानी', price: 162, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg biryani simple' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Veg Pulav'), nameEn: 'Veg Pulav', nameHi: 'वेज पुलाव', price: 140, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg pulao' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Kashmiri Pulav (Sweet)'), nameEn: 'Kashmiri Pulav (Sweet)', nameHi: 'कश्मीरी पुलाव (स्वीट)', price: 155, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kashmiri pulao' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Kaju Pulav'), nameEn: 'Kaju Pulav', nameHi: 'काजु पुलाव', price: 150, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju pulao' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Mater Pulav'), nameEn: 'Mater Pulav', nameHi: 'मटर पुलाव', price: 140, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'matar pulao' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Masala Rice'), nameEn: 'Masala Rice', nameHi: 'मसाला राईस', price: 120, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala rice' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Jeera Rice'), nameEn: 'Jeera Rice', nameHi: 'जीरा राईस', price: 118, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'jeera rice' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Plain Rice'), nameEn: 'Plain Rice', nameHi: 'प्लेन राईस', price: 100, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain rice' },
-      { id: generateDishId(slugify('Rice & Biryani'), 'Steam Rice'), nameEn: 'Steam Rice', nameHi: 'स्टीम राईस', price: 110, category: slugify('Rice & Biryani'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'steam rice' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'S.P. Veg Monto Biriyani'), nameEn: 'S.P. Veg Monto Biriyani', nameHi: 'स्पेशल वेज मोन्टो बिरयानी', price: 190, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg biryani' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Dum Biriyani'), nameEn: 'Dum Biriyani', nameHi: 'दम बिरयानी', price: 170, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'dum biryani' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Hyderabadi Biriyani'), nameEn: 'Hyderabadi Biriyani', nameHi: 'हैदराबादी बिरयानी', price: 165, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'hyderabadi biryani' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Veg Biriyani'), nameEn: 'Veg Biriyani', nameHi: 'वेज बिरयानी', price: 162, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg biryani simple' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Veg Pulav'), nameEn: 'Veg Pulav', nameHi: 'वेज पुलाव', price: 140, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'veg pulao' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Kashmiri Pulav (Sweet)'), nameEn: 'Kashmiri Pulav (Sweet)', nameHi: 'कश्मीरी पुलाव (स्वीट)', price: 155, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kashmiri pulao' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Kaju Pulav'), nameEn: 'Kaju Pulav', nameHi: 'काजु पुलाव', price: 150, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kaju pulao' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Mater Pulav'), nameEn: 'Mater Pulav', nameHi: 'मटर पुलाव', price: 140, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'matar pulao' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Masala Rice'), nameEn: 'Masala Rice', nameHi: 'मसाला राईस', price: 120, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala rice' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Jeera Rice'), nameEn: 'Jeera Rice', nameHi: 'जीरा राईस', price: 118, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'jeera rice' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Plain Rice'), nameEn: 'Plain Rice', nameHi: 'प्लेन राईस', price: 100, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'plain rice' },
+      { id: generateDishId(slugify('Basmati Ka Swad Rice'), 'Steam Rice'), nameEn: 'Steam Rice', nameHi: 'स्टीम राईस', price: 110, category: slugify('Basmati Ka Swad Rice'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'steam rice' },
     ],
   },
   {
@@ -572,20 +573,45 @@ let MOCK_MENU_DATA_TEMP: MenuCategory[] = [
   },
 ];
 
-// Logic to restructure the menu
-const tandoorStartersCategoryIndex = MOCK_MENU_DATA_TEMP.findIndex(cat => cat.id === slugify('Tandoor Starters'));
+// Logic to restructure the menu for Tandoor Starters and Paneer ka Kamal
+const tandoorStartersCategoryIndexOriginal = MOCK_MENU_DATA_TEMP.findIndex(cat => cat.nameEn === 'Tandoor Starters'); // Use nameEn for original find
 
-if (tandoorStartersCategoryIndex !== -1) {
-  const tandoorStartersCategory = MOCK_MENU_DATA_TEMP[tandoorStartersCategoryIndex];
-  const originalTandoorDishes = [...tandoorStartersCategory.dishes]; // Clone for safety
+if (tandoorStartersCategoryIndexOriginal !== -1) {
+  const originalTandoorStartersCategory = MOCK_MENU_DATA_TEMP[tandoorStartersCategoryIndexOriginal];
+  // Define original Tandoor Starters dishes (these were missing in the provided snippet but are needed for the split)
+  const originalTandoorDishesData: Dish[] = [
+      { id: '', nameEn: 'Paneer Tikka Dry', nameHi: 'पनीर टिक्का डाय', price: 210, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka' },
+      { id: '', nameEn: 'Paneer Tikka Gravy', nameHi: 'पनीर टिक्का ग्रेवी', price: 210, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka gravy' },
+      { id: '', nameEn: 'Paneer Garlic Dry', nameHi: 'पनीर गार्लिक डाय', price: 215, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer garlic' },
+      { id: '', nameEn: 'Paneer Garlic Gravy', nameHi: 'पनीर गार्लिक ग्रेवी', price: 215, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer garlic gravy' },
+      { id: '', nameEn: 'Paneer Malai Tikka Dry', nameHi: 'पनीर मलाई टिक्का डाय', price: 225, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer malai tikka' },
+      { id: '', nameEn: 'Achari Tikka Dry', nameHi: 'अचारी टिक्का डाय', price: 220, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'achari tikka' },
+      // Dishes to be moved to Paneer ka Kamal
+      { id: '', nameEn: 'Special Paneer Monto', nameHi: 'स्पेशल पनीर मोन्टो', price: 230, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'special paneer monto' },
+      { id: '', nameEn: 'Paneer Tawa', nameHi: 'पनीर तवा', price: 190, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tawa' },
+      { id: '', nameEn: 'Paneer Tikka Masala', nameHi: 'पनीर टिक्का मसाला', price: 205, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka masala' },
+      { id: '', nameEn: 'Paneer Angara', nameHi: 'पनीर अंगारा', price: 210, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer angara' },
+      { id: '', nameEn: 'Paneer Butter Masala', nameHi: 'पनीर बटर मसाला', price: 195, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer butter masala' },
+      { id: '', nameEn: 'Paneer Bhurji', nameHi: 'पनीर भुर्जी', price: 220, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer bhurji' },
+      { id: '', nameEn: 'Paneer Handi', nameHi: 'पनीर हांडी', price: 185, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer handi' },
+      { id: '', nameEn: 'Paneer Kadai', nameHi: 'पनीर कढ़ाई', price: 185, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer kadai' },
+      { id: '', nameEn: 'Paneer Lajawab', nameHi: 'पनीर लाजवाब', price: 190, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer lajawab' },
+      { id: '', nameEn: 'Paneer Toofani', nameHi: 'पनीर तूफानी', price: 200, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer toofani' },
+      { id: '', nameEn: 'Paneer Methi Garlic Masala', nameHi: 'पनीर मैथी लहसुन मसाला', price: 200, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer methi garlic' },
+      { id: '', nameEn: 'Paneer Chatpata', nameHi: 'पनीर चटपटा', price: 195, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer chatpata' },
+      { id: '', nameEn: 'Palak Paneer', nameHi: 'पालक पनीर', price: 170, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'palak paneer' },
+      { id: '', nameEn: 'Mutter Paneer', nameHi: 'मटर पनीर', price: 165, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'mutter paneer' },
+      { id: '', nameEn: 'Mushroom Paneer', nameHi: 'मशरूम पनीर', price: 205, category: '', imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'mushroom paneer' },
+  ].map(dish => ({...dish, category: slugify(originalTandoorStartersCategory.nameEn), id: generateDishId(slugify(originalTandoorStartersCategory.nameEn), dish.nameEn) }));
 
-  const achariTikkaDryIndex = originalTandoorDishes.findIndex(dish => dish.nameEn === 'Achari Tikka Dry');
+  originalTandoorStartersCategory.dishes = originalTandoorDishesData; // Populate with full list first
 
+  const achariTikkaDryIndex = originalTandoorStartersCategory.dishes.findIndex(dish => dish.nameEn === 'Achari Tikka Dry');
   const paneerKaKamalSlug = slugify('Paneer ka Kamal');
   
   let dishesForPaneerKaKamal: Dish[] = [];
-  if (achariTikkaDryIndex !== -1 && achariTikkaDryIndex + 1 < originalTandoorDishes.length) {
-    dishesForPaneerKaKamal = originalTandoorDishes.slice(achariTikkaDryIndex + 1).map(dish => ({
+  if (achariTikkaDryIndex !== -1 && achariTikkaDryIndex + 1 < originalTandoorStartersCategory.dishes.length) {
+    dishesForPaneerKaKamal = originalTandoorStartersCategory.dishes.slice(achariTikkaDryIndex + 1).map(dish => ({
       ...dish,
       category: paneerKaKamalSlug,
       id: generateDishId(paneerKaKamalSlug, dish.nameEn),
@@ -593,10 +619,14 @@ if (tandoorStartersCategoryIndex !== -1) {
   }
 
   const newTandoorStartersDishes = achariTikkaDryIndex !== -1 
-    ? originalTandoorDishes.slice(0, achariTikkaDryIndex + 1)
-    : originalTandoorDishes; // Fallback if 'Achari Tikka Dry' not found (should not happen with current data)
+    ? originalTandoorStartersCategory.dishes.slice(0, achariTikkaDryIndex + 1)
+    : originalTandoorStartersCategory.dishes;
   
-  tandoorStartersCategory.dishes = newTandoorStartersDishes;
+  originalTandoorStartersCategory.dishes = newTandoorStartersDishes.map(dish => ({ // Re-generate IDs for remaining tandoor starters
+    ...dish,
+    category: slugify(originalTandoorStartersCategory.nameEn),
+    id: generateDishId(slugify(originalTandoorStartersCategory.nameEn), dish.nameEn),
+  }));
 
   const newPaneerKaKamalCategory: MenuCategory = {
     id: paneerKaKamalSlug,
@@ -606,9 +636,9 @@ if (tandoorStartersCategoryIndex !== -1) {
     dishes: dishesForPaneerKaKamal,
   };
 
-  // Insert the new category after Tandoor Starters
-  MOCK_MENU_DATA_TEMP.splice(tandoorStartersCategoryIndex + 1, 0, newPaneerKaKamalCategory);
+  MOCK_MENU_DATA_TEMP.splice(tandoorStartersCategoryIndexOriginal + 1, 0, newPaneerKaKamalCategory);
 }
+
 
 export const MOCK_MENU_DATA: MenuCategory[] = MOCK_MENU_DATA_TEMP;
 
@@ -618,13 +648,15 @@ const findDishFromNewMenu = (dishId: string): Dish | undefined => {
     const foundDish = category.dishes.find(d => d.id === dishId);
     if (foundDish) return foundDish;
   }
-  return undefined;
+  // Fallback for dishes that might have had ID changes due to category renaming/restructuring
+  // This simple fallback might not cover all edge cases if dish names are not unique across old categories
+  const flatDishes = MOCK_MENU_DATA.flatMap(cat => cat.dishes);
+  return flatDishes.find(d => slugify(d.nameEn) === slugify(dishId.substring(dishId.indexOf('-') + 1)))
 };
 
 const mockOrderDish1 = findDishFromNewMenu(generateDishId(slugify('South Indian Fancy Dosa'), 'Masala Dosa')); 
-// Update mockOrderDish2 to reflect potential ID change due to category move
 const mockOrderDish2 = findDishFromNewMenu(generateDishId(slugify('Paneer ka Kamal'), 'Paneer Butter Masala')); 
-const mockOrderDish3 = findDishFromNewMenu(generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Naan'));
+const mockOrderDish3 = findDishFromNewMenu(generateDishId(slugify('Mitti Ki Khushbu Roti'), 'Butter Naan')); // Updated category slug
 
 
 export const MOCK_ORDERS_DATA: OrderType[] = [
@@ -656,4 +688,6 @@ export const MOCK_ORDERS_DATA: OrderType[] = [
 
 export const INR_CURRENCY_CODE = 'INR';
 export const INR_SYMBOL = '₹';
+    
+
     
