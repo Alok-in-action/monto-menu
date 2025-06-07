@@ -4,12 +4,11 @@ import {
   Soup, Salad, UtensilsCrossed, IndianRupee, ShoppingCart, User, ListOrdered, 
   CalendarDays, CheckCircle, XCircle, RefreshCw, Disc3, Wheat, CookingPot, 
   Sparkles, Flame, Nut, Grip, Container, CupSoda, Martini, Vegan, Utensils,
-  Pizza, Sandwich // Removed Burger, it does not exist
+  Pizza, Sandwich 
 } from 'lucide-react';
 
 export const APP_NAME = "MONTO Restaurant";
 
-// Updated CATEGORY_ICONS to match new category names and include new icons
 export const CATEGORY_ICONS: { [key: string]: React.ElementType } = {
   'Khane Se Pahele Time Pass': Salad,
   'Chinese Hot Soup': Soup,
@@ -21,6 +20,7 @@ export const CATEGORY_ICONS: { [key: string]: React.ElementType } = {
   'Chinese Main Course': Utensils,
   'Chinese Starters': Sparkles,
   'Tandoor Starters': Flame,
+  'Paneer ka Kamal': CookingPot, // New category icon
   'Punjab Ka Dhamaka (Veg Specials)': CookingPot,
   'Kaju Special': Nut,
   'Kofta': Vegan,
@@ -32,9 +32,9 @@ export const CATEGORY_ICONS: { [key: string]: React.ElementType } = {
   'Mozzarella Pizza': Pizza,
   'Toast Sandwich': Sandwich,
   'Pav Bhaji': CookingPot,
-  'Pizza': Pizza, // Plain Pizza category
+  'Pizza': Pizza, 
   'Grill Sandwich': Sandwich,
-  'Burger': Sandwich, // Changed Burger icon to Sandwich
+  'Burger': Sandwich, 
   'Sip-in Soda': CupSoda,
   'Paper Dosa': Disc3,
   'Uttapam': Disc3,
@@ -49,7 +49,7 @@ export const WATER_BOTTLE_DISH: Dish = {
   nameEn: 'Mineral Water Bottle',
   nameHi: 'मिनरल वाटर बोतल',
   price: 20.00,
-  category: 'essentials', // This category won't be displayed in the main menu
+  category: 'essentials', 
   description: 'Chilled and refreshing mineral water.',
   imageUrl: PLACEHOLDER_IMAGE_URL,
   isVegetarian: true,
@@ -62,7 +62,8 @@ const generateDishId = (categorySlug: string, dishNameEn: string) => {
   return `${categorySlug}-${slugify(dishNameEn)}`;
 };
 
-export const MOCK_MENU_DATA: MenuCategory[] = [
+// Original MOCK_MENU_DATA array definition, which will be modified
+let MOCK_MENU_DATA_TEMP: MenuCategory[] = [
   {
     id: slugify('Khane Se Pahele Time Pass'),
     nameEn: 'Khane Se Pahele Time Pass',
@@ -221,42 +222,10 @@ export const MOCK_MENU_DATA: MenuCategory[] = [
     nameEn: 'Tandoor Starters',
     nameHi: 'तंदूर स्टार्टर्स',
     icon: CATEGORY_ICONS['Tandoor Starters'],
-    dishes: [
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Barah Tikka Dry'), nameEn: 'Paneer Barah Tikka Dry', nameHi: 'पनीर ब्राह टिक्का डाय', price: 270, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Tikka Dry'), nameEn: 'Paneer Tikka Dry', nameHi: 'पनीर टीक्का डाय', price: 250, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka dry' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Hariyali Tikka Dry'), nameEn: 'Paneer Hariyali Tikka Dry', nameHi: 'पनीर हरियाली टिक्का डाय', price: 230, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'hariyali tikka' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Harabhara Kabab'), nameEn: 'Harabhara Kabab', nameHi: 'हराभरा कवाब', price: 215, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'hara bhara kabab' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Raja Kabab'), nameEn: 'Raja Kabab', nameHi: 'राजा कवाब', price: 190, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'raja kabab' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Achari Tikka Dry'), nameEn: 'Achari Tikka Dry', nameHi: 'अचारी टिक्का डाय', price: 240, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'achari tikka' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Special Paneer Monto'), nameEn: 'Special Paneer Monto', nameHi: 'स्पेशल पनीर मोन्टो', price: 275, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'special paneer' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Takatak'), nameEn: 'Paneer Takatak', nameHi: 'पनीर टकाटक', price: 225, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer takatak' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Lababdar'), nameEn: 'Paneer Lababdar', nameHi: 'पनीर लबाबदार', price: 215, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer lababdar' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Rustom'), nameEn: 'Paneer Rustom', nameHi: 'पनीर रूस्तम', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer rustom' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Punjabi'), nameEn: 'Paneer Punjabi', nameHi: 'पनीर पंजाबी', price: 215, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer punjabi' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Angara'), nameEn: 'Paneer Angara', nameHi: 'पनीर अंगारा', price: 200, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer angara' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Tawa'), nameEn: 'Paneer Tawa', nameHi: 'पनीर तवा', price: 225, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tawa' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Matar Paneer'), nameEn: 'Matar Paneer', nameHi: 'मटर पनीर', price: 190, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'matar paneer' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Handi'), nameEn: 'Paneer Handi', nameHi: 'पनीर हांडी', price: 195, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer handi' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Kadai'), nameEn: 'Paneer Kadai', nameHi: 'पनीर कढ़ाई', price: 195, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer kadai' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Patiyala'), nameEn: 'Paneer Patiyala', nameHi: 'पनीर पटीयाला', price: 205, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer patiyala' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Pasanda'), nameEn: 'Paneer Pasanda', nameHi: 'पनीर पसंदा', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer pasanda' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Shahi Paneer'), nameEn: 'Shahi Paneer', nameHi: 'शाही पनीर', price: 190, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'shahi paneer' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Chatpata'), nameEn: 'Paneer Chatpata', nameHi: 'पनीर चटपटा', price: 200, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer chatpata' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Diwani Handi'), nameEn: 'Paneer Diwani Handi', nameHi: 'पनीर दिवानी हांडी', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'diwani handi' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Lasuniya'), nameEn: 'Paneer Lasuniya', nameHi: 'पनीर लसुनिया', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer lasuniya' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Tikka Masala'), nameEn: 'Paneer Tikka Masala', nameHi: 'पनीर टिक्का मसाला', price: 200, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer tikka masala' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Bhurji'), nameEn: 'Paneer Bhurji', nameHi: 'पनीर भुर्जी', price: 220, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer bhurji' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Toofani'), nameEn: 'Paneer Toofani', nameHi: 'पनीर तुफानी', price: 195, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer toofani' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Palak Paneer'), nameEn: 'Palak Paneer', nameHi: 'पालक पनीर', price: 175, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'palak paneer' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Korma'), nameEn: 'Paneer Korma', nameHi: 'पनीर कोरमा', price: 205, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer korma' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Butter Masala'), nameEn: 'Paneer Butter Masala', nameHi: 'पनीर बटर मसाला', price: 270, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer butter masala' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer K.K.T'), nameEn: 'Paneer K.K.T', nameHi: 'पनीर के.के.टी', price: 240, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer kkt' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Bahubali'), nameEn: 'Paneer Bahubali', nameHi: 'पनीर बहुबली', price: 190, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer bahubali' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Chula Paneer'), nameEn: 'Chula Paneer', nameHi: 'छोला पनीर', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'chola paneer' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Paneer Do Pyaja'), nameEn: 'Paneer Do Pyaja', nameHi: 'पनीर दो प्याजा', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'paneer do pyaza' },
-      { id: generateDishId(slugify('Tandoor Starters'), 'Mushroom Paneer'), nameEn: 'Mushroom Paneer', nameHi: 'मशरूम पनीर', price: 210, category: slugify('Tandoor Starters'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'mushroom paneer' },
+    dishes: [ // Dishes will be populated dynamically
     ]
   },
+  // Placeholder for the new "Paneer ka Kamal" category, to be inserted dynamically
   {
     id: slugify('Kaju Special'),
     nameEn: 'Kaju Special',
@@ -543,7 +512,7 @@ export const MOCK_MENU_DATA: MenuCategory[] = [
       { id: generateDishId(slugify('Sip-in Soda'), 'Kala Khatta Lime'), nameEn: 'Kala Khatta Lime', nameHi: 'काला खटटा लाइम', price: 45, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'kala khatta' },
       { id: generateDishId(slugify('Sip-in Soda'), 'Sweet Lime Soda'), nameEn: 'Sweet Lime Soda', nameHi: 'मीठा लाइम सोडा', price: 40, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'sweet lime soda' },
       { id: generateDishId(slugify('Sip-in Soda'), 'Salt Lime Soda'), nameEn: 'Salt Lime Soda', nameHi: 'साल्ट लाइम सोडा', price: 40, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'salt lime soda' },
-      { id: generateDishId(slugify('Sip-in Soda'), 'Masala Lime Soda'), nameEn: 'Masala Lime Soda', nameHi: 'मसाला लाइम सोडा', price: 0, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala lime soda' }, // Price missing
+      { id: generateDishId(slugify('Sip-in Soda'), 'Masala Lime Soda'), nameEn: 'Masala Lime Soda', nameHi: 'मसाला लाइम सोडा', price: 0, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'masala lime soda' }, 
       { id: generateDishId(slugify('Sip-in Soda'), 'Jal Jeera Lime Soda'), nameEn: 'Jal Jeera Lime Soda', nameHi: 'जल जीरा लाइम सोडा', price: 45, category: slugify('Sip-in Soda'), imageUrl: PLACEHOLDER_IMAGE_URL, isVegetarian: true, dataAiHint: 'jaljeera soda' },
     ],
   },
@@ -603,7 +572,47 @@ export const MOCK_MENU_DATA: MenuCategory[] = [
   },
 ];
 
-// Updated MOCK_ORDERS_DATA to use new menu items
+// Logic to restructure the menu
+const tandoorStartersCategoryIndex = MOCK_MENU_DATA_TEMP.findIndex(cat => cat.id === slugify('Tandoor Starters'));
+
+if (tandoorStartersCategoryIndex !== -1) {
+  const tandoorStartersCategory = MOCK_MENU_DATA_TEMP[tandoorStartersCategoryIndex];
+  const originalTandoorDishes = [...tandoorStartersCategory.dishes]; // Clone for safety
+
+  const achariTikkaDryIndex = originalTandoorDishes.findIndex(dish => dish.nameEn === 'Achari Tikka Dry');
+
+  const paneerKaKamalSlug = slugify('Paneer ka Kamal');
+  
+  let dishesForPaneerKaKamal: Dish[] = [];
+  if (achariTikkaDryIndex !== -1 && achariTikkaDryIndex + 1 < originalTandoorDishes.length) {
+    dishesForPaneerKaKamal = originalTandoorDishes.slice(achariTikkaDryIndex + 1).map(dish => ({
+      ...dish,
+      category: paneerKaKamalSlug,
+      id: generateDishId(paneerKaKamalSlug, dish.nameEn),
+    }));
+  }
+
+  const newTandoorStartersDishes = achariTikkaDryIndex !== -1 
+    ? originalTandoorDishes.slice(0, achariTikkaDryIndex + 1)
+    : originalTandoorDishes; // Fallback if 'Achari Tikka Dry' not found (should not happen with current data)
+  
+  tandoorStartersCategory.dishes = newTandoorStartersDishes;
+
+  const newPaneerKaKamalCategory: MenuCategory = {
+    id: paneerKaKamalSlug,
+    nameEn: 'Paneer ka Kamal',
+    nameHi: 'पनीर का कमाल',
+    icon: CATEGORY_ICONS['Paneer ka Kamal'],
+    dishes: dishesForPaneerKaKamal,
+  };
+
+  // Insert the new category after Tandoor Starters
+  MOCK_MENU_DATA_TEMP.splice(tandoorStartersCategoryIndex + 1, 0, newPaneerKaKamalCategory);
+}
+
+export const MOCK_MENU_DATA: MenuCategory[] = MOCK_MENU_DATA_TEMP;
+
+
 const findDishFromNewMenu = (dishId: string): Dish | undefined => {
   for (const category of MOCK_MENU_DATA) {
     const foundDish = category.dishes.find(d => d.id === dishId);
@@ -613,7 +622,8 @@ const findDishFromNewMenu = (dishId: string): Dish | undefined => {
 };
 
 const mockOrderDish1 = findDishFromNewMenu(generateDishId(slugify('South Indian Fancy Dosa'), 'Masala Dosa')); 
-const mockOrderDish2 = findDishFromNewMenu(generateDishId(slugify('Tandoor Starters'), 'Paneer Butter Masala')); 
+// Update mockOrderDish2 to reflect potential ID change due to category move
+const mockOrderDish2 = findDishFromNewMenu(generateDishId(slugify('Paneer ka Kamal'), 'Paneer Butter Masala')); 
 const mockOrderDish3 = findDishFromNewMenu(generateDishId(slugify('Roti, Paratha, Naan & Kulcha'), 'Butter Naan'));
 
 
@@ -641,10 +651,9 @@ export const MOCK_ORDERS_DATA: OrderType[] = [
     status: 'Pending' as OrderType['status'],
     orderTime: new Date(Date.now() - 10 * 60 * 1000),
   }
-].filter(order => order.items.length > 0); // Ensure orders are only added if they have items
+].filter(order => order.items.length > 0); 
 
 
 export const INR_CURRENCY_CODE = 'INR';
 export const INR_SYMBOL = '₹';
     
-
