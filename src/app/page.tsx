@@ -2,9 +2,10 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import Image from 'next/image'; // Import next/image
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
-import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL } from '@/lib/constants'; 
+import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL, APP_NAME } from '@/lib/constants'; 
 import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
@@ -155,7 +156,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, [setActiveCategoryId, isLoadingMenu, finalSearchQuery, isAICorrecting, aiCorrectedQuery, searchQuery]); 
+  }, [setActiveCategoryId, isAICorrecting, aiCorrectedQuery, finalSearchQuery, isLoadingMenu, searchQuery, categoryNavWrapperRef]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -173,6 +174,13 @@ export default function MenuPage() {
   return (
     <div className="space-y-8">
       <header className="text-center" ref={pageHeaderRef}>
+        <Image 
+          src="/logo.png" 
+          alt={`${APP_NAME} Logo`} 
+          width={64} // You can adjust width and height
+          height={64} 
+          className="mx-auto mb-4 h-16 w-16" // Centered and margin below
+        />
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
