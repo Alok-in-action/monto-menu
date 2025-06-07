@@ -19,8 +19,8 @@ export default function CategoryNavigationBar({
   onCategorySelect,
 }: CategoryNavigationBarProps) {
   return (
-    <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow sticky top-16 z-40">
-      {/* Increased z-index to be above content but below main header. Adjusted sticky top for header height */}
+    // Removed sticky and z-index from ScrollArea. Retained its visual styling.
+    <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow">
       <div className="flex w-max space-x-2 p-3">
         {categories.map((category) => {
           const IconComponent = category.icon;
