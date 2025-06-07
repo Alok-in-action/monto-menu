@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image'; // Import next/image
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
-import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL, APP_NAME } from '@/lib/constants'; 
+import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL, APP_NAME } from '@/lib/constants';
 import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
@@ -35,7 +35,7 @@ export default function MenuPage() {
         dishes: category.dishes.map(dish => ({
           ...dish,
           imageUrl: dish.imageUrl || PLACEHOLDER_IMAGE_URL,
-          category: category.id, 
+          category: category.id,
         }))
       }));
       setMenuData(dataWithPlaceholders);
@@ -43,7 +43,7 @@ export default function MenuPage() {
         setActiveCategoryId(dataWithPlaceholders[0].id);
       }
       setIsLoadingMenu(false);
-    }, 500); 
+    }, 500);
   }, []);
 
 
@@ -115,13 +115,15 @@ export default function MenuPage() {
     const observerOptions = {
       root: null,
       rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`,
-      threshold: 0.01,
+      threshold: 0.01, // Lower threshold for earlier detection
     };
 
     const observer = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
+        // Sort by vertical position on screen to pick the "topmost" visible one
         visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        // Only update if the new active ID is different
         if (activeCategoryId !== visibleEntries[0].target.id) {
             setActiveCategoryId(visibleEntries[0].target.id);
         }
@@ -135,7 +137,8 @@ export default function MenuPage() {
     return () => {
       observer.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting]); 
+  // Removed activeCategoryId from dependencies to prevent observer re-init on programmatic change
+  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting]);
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
@@ -143,7 +146,7 @@ export default function MenuPage() {
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
-      const currentCategoryNavWrapper = categoryNavWrapperRef.current; 
+      const currentCategoryNavWrapper = categoryNavWrapperRef.current;
       let offset = 0;
       if (siteHeader) offset += siteHeader.offsetHeight;
       if (currentCategoryNavWrapper) offset += currentCategoryNavWrapper.offsetHeight;
@@ -156,7 +159,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, [setActiveCategoryId, categoryNavWrapperRef]); 
+  }, [setActiveCategoryId, categoryNavWrapperRef, isLoadingMenu, finalSearchQuery, isAICorrecting]); // Dependencies reflect what affects offset calculation
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -174,12 +177,12 @@ export default function MenuPage() {
   return (
     <div className="space-y-8">
       <header className="text-center" ref={pageHeaderRef}>
-        <Image 
-          src="/file_0000000023f8622fad01a72af91b53fa.png" 
-          alt={`${APP_NAME} Logo`} 
-          width={80} 
-          height={80} 
-          className="mx-auto mb-4 h-20 w-20" 
+        <Image
+          src="/file_0000000023f8622fad01a72af91b53fa.png"
+          alt={`${APP_NAME} Logo`}
+          width={80}
+          height={80}
+          className="mx-auto mb-4 h-20 w-20"
         />
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
@@ -199,7 +202,7 @@ export default function MenuPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search menu items"
           />
-          {(isAICorrecting || isLoadingMenu) && ( 
+          {(isAICorrecting || isLoadingMenu) && (
             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-spin" />
           )}
         </div>
@@ -251,4 +254,3 @@ export default function MenuPage() {
     </div>
   );
 }
-
