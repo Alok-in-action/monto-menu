@@ -135,8 +135,7 @@ export default function MenuPage() {
     return () => {
       observer.disconnect();
     };
-  // Removed activeCategoryId from dependencies as it's set by this effect
-  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef]); 
+  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting]); 
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
@@ -157,8 +156,6 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  // Re-create this function if the way categoryNavWrapperRef is managed or how offsets are calculated fundamentally changes.
-  // Keeping it minimal to avoid re-renders if only activeCategoryId changes due to scroll.
   }, [setActiveCategoryId, categoryNavWrapperRef]); 
 
   const hasAnyResults = useMemo(() => {
@@ -254,3 +251,4 @@ export default function MenuPage() {
     </div>
   );
 }
+
