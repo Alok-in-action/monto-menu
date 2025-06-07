@@ -84,7 +84,7 @@ export default function MenuPage() {
         const result = await correctMenuQuery({ query: searchQuery, menuContext: menuContextString });
         setAiCorrectedQuery(result.correctedQuery || searchQuery);
       } catch (error) {
-        console.error("AI query correction error:", error);
+        console.error("Error fetching menu data from Supabase. Message:", (error as Error)?.message, "Error object:", error);
         setAiCorrectedQuery(searchQuery);
       } finally {
         setIsAICorrecting(false);
@@ -155,7 +155,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, [isLoadingMenu, finalSearchQuery, isAICorrecting, setActiveCategoryId]); 
+  }, [setActiveCategoryId, isLoadingMenu, finalSearchQuery, isAICorrecting, aiCorrectedQuery, searchQuery]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -243,3 +243,4 @@ export default function MenuPage() {
     </div>
   );
 }
+
