@@ -4,12 +4,11 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
-import { CATEGORY_ICONS, PLACEHOLDER_IMAGE_URL } from '@/lib/constants';
+import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL } from '@/lib/constants'; // Use MOCK_MENU_DATA
 import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
 import { correctMenuQuery } from '@/ai/flows/correct-menu-query';
-import { supabase } from '@/lib/supabaseClient'; // Import Supabase client
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
@@ -22,60 +21,28 @@ export default function MenuPage() {
   const [isAICorrecting, setIsAICorrecting] = useState(false);
 
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const pageHeaderRef = useRef<HTMLElement | null>(null);
   const categoryNavWrapperRef = useRef<HTMLDivElement | null>(null);
 
 
   useEffect(() => {
-    const fetchMenuData = async () => {
-      setIsLoadingMenu(true);
-      try {
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('menu_categories')
-          .select('id, name_en, name_hi, icon_name')
-          .order('sort_order', { ascending: true });
-
-        if (categoriesError) throw categoriesError;
-        if (!categoriesData) throw new Error('No categories found');
-
-        const fetchedMenuData: MenuCategory[] = await Promise.all(
-          categoriesData.map(async (cat) => {
-            const { data: dishesData, error: dishesError } = await supabase
-              .from('dishes')
-              .select('id, name_en, name_hi, price, description, image_url, is_vegetarian, data_ai_hint')
-              .eq('category_id', cat.id)
-              .order('sort_order', { ascending: true });
-
-            if (dishesError) throw dishesError;
-
-            return {
-              id: cat.id,
-              nameEn: cat.name_en,
-              nameHi: cat.name_hi || cat.name_en,
-              icon: CATEGORY_ICONS[cat.icon_name || 'Default'] || CATEGORY_ICONS['Default'],
-              dishes: (dishesData || []).map(d => ({
-                ...d,
-                category: cat.id, // Ensure category property is set on dish
-                imageUrl: d.image_url || PLACEHOLDER_IMAGE_URL,
-                // dataAiHint is assumed to come from DB or can be generated
-              }) as Dish),
-            };
-          })
-        );
-        setMenuData(fetchedMenuData);
-        if (fetchedMenuData.length > 0) {
-          setActiveCategoryId(fetchedMenuData[0].id);
-        }
-      } catch (error) {
-        console.error("Error fetching menu data from Supabase. Message:", (error as any)?.message, "Error object:", error);
-        setMenuData([]); // Set to empty or show error state
-      } finally {
-        setIsLoadingMenu(false);
+    setIsLoadingMenu(true);
+    // Simulate API call to load mock data
+    setTimeout(() => {
+      const dataWithPlaceholders = MOCK_MENU_DATA.map(category => ({
+        ...category,
+        dishes: category.dishes.map(dish => ({
+          ...dish,
+          imageUrl: dish.imageUrl || PLACEHOLDER_IMAGE_URL,
+          category: category.id, // Ensure category is set on dish
+        }))
+      }));
+      setMenuData(dataWithPlaceholders);
+      if (dataWithPlaceholders.length > 0) {
+        setActiveCategoryId(dataWithPlaceholders[0].id);
       }
-    };
-
-    fetchMenuData();
+      setIsLoadingMenu(false);
+    }, 500); // Simulate loading delay
   }, []);
 
 
@@ -97,7 +64,6 @@ export default function MenuPage() {
   }, [menuData, isLoadingMenu]);
 
   useEffect(() => {
-    // Ensure refs are only populated once menuData is available
     if (menuData.length > 0) {
         menuData.forEach(category => {
             categoryRefs.current[category.id] = document.getElementById(category.id);
@@ -108,7 +74,7 @@ export default function MenuPage() {
 
   useEffect(() => {
     const debouncedSearch = async () => {
-      if (!searchQuery.trim() || !menuContextString) { // Don't run if menuContext is not ready
+      if (!searchQuery.trim() || !menuContextString) {
         setAiCorrectedQuery('');
         setIsAICorrecting(false);
         return;
@@ -136,8 +102,7 @@ export default function MenuPage() {
 
 
   useEffect(() => {
-    if (observerRef.current) observerRef.current.disconnect();
-    if (isLoadingMenu || menuData.length === 0) return; // Don't setup observer if no data
+    if (isLoadingMenu || menuData.length === 0) return;
 
     const siteHeader = document.querySelector('header[data-site-header="true"]');
     const currentCategoryNavWrapper = categoryNavWrapperRef.current;
@@ -152,7 +117,7 @@ export default function MenuPage() {
       threshold: 0.01,
     };
 
-    observerRef.current = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
         visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -162,19 +127,18 @@ export default function MenuPage() {
       }
     }, observerOptions);
 
-    const currentObserver = observerRef.current;
     Object.values(categoryRefs.current).forEach(ref => {
-      if (ref) currentObserver.observe(ref);
+      if (ref) observer.observe(ref);
     });
 
     return () => {
-      if (currentObserver) currentObserver.disconnect();
+      observer.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); // Include activeCategoryId to prevent re-runs if it's already correct
+  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]);
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
-    setActiveCategoryId(categoryId); // Optimistically set active category
+    setActiveCategoryId(categoryId); 
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
@@ -227,7 +191,7 @@ export default function MenuPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search menu items"
           />
-          {(isAICorrecting || isLoadingMenu) && (
+          {(isAICorrecting || isLoadingMenu) && ( // Show loader if AI correcting OR menu loading
             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-spin" />
           )}
         </div>
