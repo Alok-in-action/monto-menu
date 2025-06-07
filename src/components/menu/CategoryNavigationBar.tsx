@@ -25,12 +25,12 @@ export default function CategoryNavigationBar({
     if (selectedCategoryId && buttonRefs.current[selectedCategoryId]) {
       const activeButton = buttonRefs.current[selectedCategoryId];
       activeButton?.scrollIntoView({
-        behavior: 'auto', // Changed from 'smooth' to 'auto'
+        behavior: 'smooth', // Changed from 'auto' back to 'smooth'
         inline: 'center', 
         block: 'nearest',  
       });
     }
-  }, [selectedCategoryId]); 
+  }, [selectedCategoryId, categories]); // Added categories to dependencies to ensure refs are up-to-date if categories change
 
   return (
     <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow">
@@ -69,3 +69,4 @@ export default function CategoryNavigationBar({
     </ScrollArea>
   );
 }
+
