@@ -35,8 +35,11 @@ export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header 
+      data-site-header="true" 
+      className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 h-16" // Ensure h-16 is here
+    >
+      <div className="container flex h-full items-center justify-between"> {/* Use h-full */}
         <Link href="/" className="flex items-center space-x-2 text-primary hover:opacity-80 transition-opacity">
           <UtensilsCrossed className="h-8 w-8" />
           <span className="font-headline font-bold text-2xl">{APP_NAME}</span>
