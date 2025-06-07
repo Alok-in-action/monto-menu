@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
-import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL } from '@/lib/constants'; // Use MOCK_MENU_DATA
+import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL } from '@/lib/constants'; 
 import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
@@ -34,7 +34,7 @@ export default function MenuPage() {
         dishes: category.dishes.map(dish => ({
           ...dish,
           imageUrl: dish.imageUrl || PLACEHOLDER_IMAGE_URL,
-          category: category.id, // Ensure category is set on dish
+          category: category.id, 
         }))
       }));
       setMenuData(dataWithPlaceholders);
@@ -42,7 +42,7 @@ export default function MenuPage() {
         setActiveCategoryId(dataWithPlaceholders[0].id);
       }
       setIsLoadingMenu(false);
-    }, 500); // Simulate loading delay
+    }, 500); 
   }, []);
 
 
@@ -134,7 +134,7 @@ export default function MenuPage() {
     return () => {
       observer.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); // categoryNavWrapperRef.current.offsetHeight changes when finalSearchQuery changes, observer re-created
+  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); 
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
@@ -142,7 +142,7 @@ export default function MenuPage() {
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
-      const currentCategoryNavWrapper = categoryNavWrapperRef.current; // Read fresh ref here
+      const currentCategoryNavWrapper = categoryNavWrapperRef.current; 
       let offset = 0;
       if (siteHeader) offset += siteHeader.offsetHeight;
       if (currentCategoryNavWrapper) offset += currentCategoryNavWrapper.offsetHeight;
@@ -155,7 +155,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, [searchQuery, aiCorrectedQuery, isAICorrecting, isLoadingMenu]); // Dependencies ensure callback is fresh when nav wrapper height might change
+  }, [isLoadingMenu, finalSearchQuery, isAICorrecting, setActiveCategoryId]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -191,7 +191,7 @@ export default function MenuPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search menu items"
           />
-          {(isAICorrecting || isLoadingMenu) && ( // Show loader if AI correcting OR menu loading
+          {(isAICorrecting || isLoadingMenu) && ( 
             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-spin" />
           )}
         </div>
