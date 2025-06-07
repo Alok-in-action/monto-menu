@@ -156,7 +156,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, [setActiveCategoryId, isAICorrecting, aiCorrectedQuery, finalSearchQuery, isLoadingMenu, searchQuery, categoryNavWrapperRef]); 
+  }, [setActiveCategoryId, categoryNavWrapperRef]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -175,11 +175,11 @@ export default function MenuPage() {
     <div className="space-y-8">
       <header className="text-center" ref={pageHeaderRef}>
         <Image 
-          src="/logo.png" 
+          src="/file_0000000023f8622fad01a72af91b53fa.png" 
           alt={`${APP_NAME} Logo`} 
-          width={64} // You can adjust width and height
+          width={64} 
           height={64} 
-          className="mx-auto mb-4 h-16 w-16" // Centered and margin below
+          className="mx-auto mb-4 h-16 w-16" 
         />
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
@@ -251,4 +251,3 @@ export default function MenuPage() {
     </div>
   );
 }
-

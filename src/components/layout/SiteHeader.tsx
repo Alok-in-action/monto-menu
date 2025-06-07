@@ -43,7 +43,7 @@ export default function SiteHeader() {
       <div className="container flex h-full items-center justify-between"> {/* Use h-full */}
         <Link href="/" className="flex items-center space-x-2 text-primary hover:opacity-80 transition-opacity">
           {/* Replace UtensilsCrossed icon with the Image component */}
-          <Image src="/logo.png" alt={`${APP_NAME} Logo`} width={32} height={32} className="h-8 w-8" />
+          <Image src="/file_0000000023f8622fad01a72af91b53fa.png" alt={`${APP_NAME} Logo`} width={32} height={32} className="h-8 w-8" />
           <span className="font-headline font-bold text-2xl">{APP_NAME}</span>
         </Link>
         
