@@ -7,36 +7,33 @@ import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA } from '@/lib/constants';
 import type { MenuCategory } from '@/types';
 
-const SCROLL_OFFSET_BUFFER = 8; // px, buffer below sticky headers
+const SCROLL_OFFSET_PRECISION = 0; // px, adjustment for scroll/observer alignment. 0 for exact alignment.
 
 export default function MenuPage() {
   const menuData: MenuCategory[] = MOCK_MENU_DATA;
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const pageHeaderRef = useRef<HTMLElement | null>(null); // Ref for the "Our Menu" header
-  const categoryNavRef = useRef<HTMLDivElement | null>(null); // Ref for the CategoryNavigationBar container
+  const pageHeaderRef = useRef<HTMLElement | null>(null); 
+  const categoryNavRef = useRef<HTMLDivElement | null>(null); 
 
-  // Initialize category refs
   useEffect(() => {
     menuData.forEach(category => {
       categoryRefs.current[category.id] = document.getElementById(category.id);
     });
   }, [menuData]);
 
-  // Set initial active category
   useEffect(() => {
-    if (menuData.length > 0 && !activeCategoryId) { // Only set if not already set
+    if (menuData.length > 0 && !activeCategoryId) { 
       setActiveCategoryId(menuData[0].id);
     }
   }, [menuData, activeCategoryId]);
   
-  // IntersectionObserver to update active category on scroll
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
-    const siteHeader = document.querySelector('header'); // Main site sticky header
-    const categoryNavBarElement = categoryNavRef.current; // The div wrapping CategoryNavigationBar
+    const siteHeader = document.querySelector('header'); 
+    const categoryNavBarElement = categoryNavRef.current; 
     
     let rootMarginTop = 0;
     if (siteHeader) rootMarginTop += siteHeader.offsetHeight;
@@ -44,14 +41,13 @@ export default function MenuPage() {
 
     const observerOptions = {
       root: null,
-      rootMargin: `-${rootMarginTop + SCROLL_OFFSET_BUFFER}px 0px 0px 0px`, 
-      threshold: 0.01, // Trigger when even a small part is visible past the offset
+      rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`, 
+      threshold: 0.01, 
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
-        // Sort by vertical position to find the topmost visible section
         visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         setActiveCategoryId(visibleEntries[0].target.id);
       }
@@ -67,15 +63,10 @@ export default function MenuPage() {
         currentObserver.disconnect();
       }
     };
-  // Rerun if menuData changes, or if the categoryNavRef element might have changed (e.g., on mount)
-  // siteHeader.offsetHeight might change on responsive breakpoint if its structure changes, so re-observe.
-  // However, direct dependency on offsetHeight values is not possible in dep array.
-  // Relying on categoryNavRef (the DOM element wrapper) being stable.
-  // Adding activeCategoryId to prevent re-runs if only active category changes internally from this effect.
   }, [menuData, categoryNavRef]); 
 
   const handleCategorySelect = (categoryId: string) => {
-    setActiveCategoryId(categoryId); // Set active for immediate UI update in nav bar
+    setActiveCategoryId(categoryId); 
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header');
@@ -85,7 +76,7 @@ export default function MenuPage() {
       if (categoryNavBarElement) offset += categoryNavBarElement.offsetHeight;
       
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - offset - SCROLL_OFFSET_BUFFER;
+      const offsetPosition = elementPosition - offset - SCROLL_OFFSET_PRECISION;
 
       window.scrollTo({
         top: offsetPosition,
@@ -96,14 +87,12 @@ export default function MenuPage() {
 
   return (
     <div className="space-y-8">
-      <header className="text-center" ref={pageHeaderRef}> {/* Removed mb-6, space-y-8 will handle */}
+      <header className="text-center" ref={pageHeaderRef}> 
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
 
       {menuData.length > 0 && (
-        // This div acts as a placeholder for the sticky CategoryNavigationBar
-        // Height = 6rem (button) + 1.5rem (padding in ScrollArea's child) + 2px (border of ScrollArea)
         <div ref={categoryNavRef} className="h-[calc(7.5rem+2px)]"> 
           <CategoryNavigationBar
             categories={menuData}
@@ -115,7 +104,6 @@ export default function MenuPage() {
 
       <div className="space-y-12">
         {menuData.map((category) => (
-          // The section element itself needs the ID for scrolling and observation
           <MenuCategorySection 
             key={category.id} 
             category={category} 
