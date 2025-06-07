@@ -68,7 +68,7 @@ export default function MenuPage() {
           setActiveCategoryId(fetchedMenuData[0].id);
         }
       } catch (error) {
-        console.error("Error fetching menu data from Supabase:", error);
+        console.error("Error fetching menu data from Supabase. Message:", (error as any)?.message, "Error object:", error);
         setMenuData([]); // Set to empty or show error state
       } finally {
         setIsLoadingMenu(false);
@@ -97,9 +97,12 @@ export default function MenuPage() {
   }, [menuData, isLoadingMenu]);
 
   useEffect(() => {
-    menuData.forEach(category => {
-      categoryRefs.current[category.id] = document.getElementById(category.id);
-    });
+    // Ensure refs are only populated once menuData is available
+    if (menuData.length > 0) {
+        menuData.forEach(category => {
+            categoryRefs.current[category.id] = document.getElementById(category.id);
+        });
+    }
   }, [menuData]);
 
 
@@ -136,7 +139,7 @@ export default function MenuPage() {
     if (observerRef.current) observerRef.current.disconnect();
     if (isLoadingMenu || menuData.length === 0) return; // Don't setup observer if no data
 
-    const siteHeader = document.querySelector('header[data-site-header="true"]'); // Target specific header
+    const siteHeader = document.querySelector('header[data-site-header="true"]');
     const currentCategoryNavWrapper = categoryNavWrapperRef.current;
 
     let rootMarginTop = 0;
@@ -146,15 +149,16 @@ export default function MenuPage() {
     const observerOptions = {
       root: null,
       rootMargin: `-${rootMarginTop + SCROLL_OFFSET_PRECISION}px 0px 0px 0px`,
-      threshold: 0.01, // A small part of the element is visible
+      threshold: 0.01,
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
       const visibleEntries = entries.filter(e => e.isIntersecting);
       if (visibleEntries.length > 0) {
-        // Sort by top position to get the one "most in view" at the top
         visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        setActiveCategoryId(visibleEntries[0].target.id);
+        if (activeCategoryId !== visibleEntries[0].target.id) {
+            setActiveCategoryId(visibleEntries[0].target.id);
+        }
       }
     }, observerOptions);
 
@@ -166,10 +170,11 @@ export default function MenuPage() {
     return () => {
       if (currentObserver) currentObserver.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery]); // Added finalSearchQuery to re-observe if filter changes elements
+  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); // Include activeCategoryId to prevent re-runs if it's already correct
+
 
   const handleCategorySelect = useCallback((categoryId: string) => {
-    setActiveCategoryId(categoryId);
+    setActiveCategoryId(categoryId); // Optimistically set active category
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
@@ -190,7 +195,7 @@ export default function MenuPage() {
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
-    if (isLoadingMenu) return true; // Assume results while loading
+    if (isLoadingMenu) return true;
     const normalizedQuery = finalSearchQuery.toLowerCase().trim();
     return menuData.some(category =>
       category.dishes.some(dish =>
@@ -211,8 +216,6 @@ export default function MenuPage() {
       <div
         ref={categoryNavWrapperRef}
         className="sticky top-16 z-40 bg-card shadow-md p-4 space-y-4 rounded-b-lg"
-        // Placeholder height: buttons (6rem) + padding (1.5rem) + scrollbar (0.625rem) + border (2px)
-        // = 8.125rem + 2px. The sticky element itself will define its height.
       >
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -224,7 +227,7 @@ export default function MenuPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search menu items"
           />
-          {(isAICorrecting || isLoadingMenu) && ( // Show loader if AI is correcting OR menu is loading
+          {(isAICorrecting || isLoadingMenu) && (
             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-spin" />
           )}
         </div>
