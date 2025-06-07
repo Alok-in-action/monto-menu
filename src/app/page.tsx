@@ -134,15 +134,15 @@ export default function MenuPage() {
     return () => {
       observer.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]);
+  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); // categoryNavWrapperRef.current.offsetHeight changes when finalSearchQuery changes, observer re-created
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
-    setActiveCategoryId(categoryId); 
+    setActiveCategoryId(categoryId);
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
-      const currentCategoryNavWrapper = categoryNavWrapperRef.current;
+      const currentCategoryNavWrapper = categoryNavWrapperRef.current; // Read fresh ref here
       let offset = 0;
       if (siteHeader) offset += siteHeader.offsetHeight;
       if (currentCategoryNavWrapper) offset += currentCategoryNavWrapper.offsetHeight;
@@ -155,7 +155,7 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
-  }, []);
+  }, [searchQuery, aiCorrectedQuery, isAICorrecting, isLoadingMenu]); // Dependencies ensure callback is fresh when nav wrapper height might change
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
