@@ -25,17 +25,15 @@ export default function CategoryNavigationBar({
     if (selectedCategoryId && buttonRefs.current[selectedCategoryId]) {
       const activeButton = buttonRefs.current[selectedCategoryId];
       activeButton?.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center', // Tries to center the item horizontally
-        block: 'nearest',  // Keeps vertical position as is (important for elements in a horizontal scroll)
+        behavior: 'auto', // Changed from 'smooth' to 'auto'
+        inline: 'center', 
+        block: 'nearest',  
       });
     }
-  }, [selectedCategoryId]); // Rerun when selectedCategoryId (active category due to vertical scroll) changes
+  }, [selectedCategoryId]); 
 
   return (
-    // This ScrollArea is nested inside the sticky div from page.tsx
     <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow">
-      {/* The inner div that actually scrolls horizontally due to w-max */}
       <div className="flex w-max space-x-2 p-3">
         {categories.map((category) => {
           const IconComponent = category.icon;
@@ -43,7 +41,7 @@ export default function CategoryNavigationBar({
           return (
             <Button
               key={category.id}
-              ref={(el) => (buttonRefs.current[category.id] = el)} // Assign ref to each button
+              ref={(el) => (buttonRefs.current[category.id] = el)} 
               variant="outline"
               className={cn(
                 "flex-shrink-0 flex flex-col items-center justify-start h-auto p-3 min-w-[7rem] max-w-[9rem] text-center shadow-sm hover:shadow-md focus:shadow-md transition-all duration-150 ease-in-out",
@@ -52,7 +50,7 @@ export default function CategoryNavigationBar({
               )}
               onClick={() => onCategorySelect(category.id)}
               aria-pressed={isSelected}
-              style={{height: '6rem'}} // Fixed height for consistency
+              style={{height: '6rem'}} 
             >
               {IconComponent && <IconComponent className="h-7 w-7 mb-1 text-primary flex-shrink-0" />}
               <span className="text-xs font-medium whitespace-normal break-words leading-tight mt-auto">
