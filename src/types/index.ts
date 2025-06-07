@@ -1,3 +1,4 @@
+
 export interface Dish {
   id: string;
   nameEn: string;
@@ -7,6 +8,7 @@ export interface Dish {
   description?: string;
   imageUrl?: string;
   isVegetarian?: boolean;
+  dataAiHint?: string; // Added for AI image hints
 }
 
 export interface MenuCategory {
