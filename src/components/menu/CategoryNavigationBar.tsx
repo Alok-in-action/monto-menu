@@ -25,7 +25,7 @@ export default function CategoryNavigationBar({
     if (selectedCategoryId && buttonRefs.current[selectedCategoryId]) {
       const activeButton = buttonRefs.current[selectedCategoryId];
       activeButton?.scrollIntoView({
-        behavior: 'auto', // Changed from 'smooth' to 'auto'
+        behavior: 'smooth', // Changed from 'auto' back to 'smooth'
         inline: 'center', 
         block: 'nearest',  
       });
