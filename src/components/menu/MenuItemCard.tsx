@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { IndianRupee, Leaf, Fish, PlusCircle } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { INR_SYMBOL, PLACEHOLDER_IMAGE_URL } from '@/lib/constants';
-import Image from 'next/image';
+import { INR_SYMBOL } from '@/lib/constants';
+// Image and PLACEHOLDER_IMAGE_URL are no longer needed if the image section is removed.
 
 interface MenuItemCardProps {
   dish: Dish;
@@ -18,15 +18,7 @@ export default function MenuItemCard({ dish }: MenuItemCardProps) {
 
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg">
-      <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
-        <Image
-          src={dish.imageUrl || PLACEHOLDER_IMAGE_URL}
-          alt={dish.nameEn}
-          layout="fill"
-          objectFit="cover"
-          data-ai-hint={dish.dataAiHint || "food item"}
-        />
-      </div>
+      {/* Image section removed */}
       <CardHeader className="pb-2 pt-4">
         <CardTitle className="font-headline text-xl md:text-2xl">{dish.nameEn}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">{dish.nameHi}</CardDescription>
