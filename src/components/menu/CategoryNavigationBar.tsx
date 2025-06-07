@@ -19,7 +19,7 @@ export default function CategoryNavigationBar({
   onCategorySelect,
 }: CategoryNavigationBarProps) {
   return (
-    <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow sticky top-[calc(4rem+1px)] z-40 md:top-[calc(4rem+1px)]">
+    <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-card shadow sticky top-16 z-40">
       {/* Increased z-index to be above content but below main header. Adjusted sticky top for header height */}
       <div className="flex w-max space-x-2 p-3">
         {categories.map((category) => {
