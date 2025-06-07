@@ -85,7 +85,7 @@ export default function MenuPage() {
         const result = await correctMenuQuery({ query: searchQuery, menuContext: menuContextString });
         setAiCorrectedQuery(result.correctedQuery || searchQuery);
       } catch (error) {
-        console.error("Error fetching menu data from Supabase. Message:", (error as Error)?.message, "Error object:", error);
+        console.error("Error calling AI correction. Message:", (error as Error)?.message, "Error object:", error);
         setAiCorrectedQuery(searchQuery);
       } finally {
         setIsAICorrecting(false);
@@ -135,11 +135,12 @@ export default function MenuPage() {
     return () => {
       observer.disconnect();
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, activeCategoryId]); 
+  // Removed activeCategoryId from dependencies as it's set by this effect
+  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef]); 
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
-    setActiveCategoryId(categoryId);
+    setActiveCategoryId(categoryId); // Set active category immediately for UI feedback
     const element = document.getElementById(categoryId);
     if (element) {
       const siteHeader = document.querySelector('header[data-site-header="true"]');
@@ -156,6 +157,8 @@ export default function MenuPage() {
         behavior: 'smooth'
       });
     }
+  // Re-create this function if the way categoryNavWrapperRef is managed or how offsets are calculated fundamentally changes.
+  // Keeping it minimal to avoid re-renders if only activeCategoryId changes due to scroll.
   }, [setActiveCategoryId, categoryNavWrapperRef]); 
 
   const hasAnyResults = useMemo(() => {
@@ -177,9 +180,9 @@ export default function MenuPage() {
         <Image 
           src="/file_0000000023f8622fad01a72af91b53fa.png" 
           alt={`${APP_NAME} Logo`} 
-          width={64} 
-          height={64} 
-          className="mx-auto mb-4 h-16 w-16" 
+          width={80} 
+          height={80} 
+          className="mx-auto mb-4 h-20 w-20" 
         />
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
