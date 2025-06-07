@@ -8,16 +8,16 @@ import { useCart } from '@/hooks/useCart';
 import { Separator } from '@/components/ui/separator';
 import { INR_SYMBOL } from '@/lib/constants';
 
-// Mock tax rates
-const GST_RATE = 0.05; // 5%
-const SERVICE_CHARGE_RATE = 0.10; // 10%
+// Updated tax rates
+const GST_RATE = 0.025; // 2.5%
+const SGST_RATE = 0.025; // 2.5%
 
 export default function BillSummary() {
   const { getCartTotal, clearCart } = useCart();
   const subtotal = getCartTotal();
   const gstAmount = subtotal * GST_RATE;
-  const serviceChargeAmount = subtotal * SERVICE_CHARGE_RATE;
-  const totalAmount = subtotal + gstAmount + serviceChargeAmount;
+  const sgstAmount = subtotal * SGST_RATE;
+  const totalAmount = subtotal + gstAmount + sgstAmount;
 
   const handleProceedToCheckout = () => {
     // In a real app, this would navigate to a checkout page or trigger an order placement flow
@@ -37,12 +37,12 @@ export default function BillSummary() {
           <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
-          <span>GST ({(GST_RATE * 100).toFixed(0)}%)</span>
+          <span>GST ({(GST_RATE * 100).toFixed(1)}%)</span>
           <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{gstAmount.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
-          <span>Service Charge ({(SERVICE_CHARGE_RATE * 100).toFixed(0)}%)</span>
-          <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{serviceChargeAmount.toFixed(2)}</span>
+          <span>SGST ({(SGST_RATE * 100).toFixed(1)}%)</span>
+          <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{sgstAmount.toFixed(2)}</span>
         </div>
         <Separator />
         <div className="flex justify-between font-bold text-xl">
@@ -72,3 +72,4 @@ export default function BillSummary() {
     </Card>
   );
 }
+
