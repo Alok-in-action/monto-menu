@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -158,7 +157,7 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder="Alok" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -171,7 +170,7 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                   <FormItem>
                     <FormLabel>10-digit Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="9876543210" {...field} />
+                      <Input placeholder="7770888407" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -184,7 +183,7 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                   <FormItem>
                     <FormLabel>Full Address</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="123, Main Street, Your City, 123456" {...field} />
+                      <Textarea placeholder="chawwni , master colony , bus stand" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,7 +196,7 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                   <FormItem>
                     <FormLabel>Landmark (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Near the old post office" {...field} />
+                      <Input placeholder="near bus stand , pani ki tanki" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
