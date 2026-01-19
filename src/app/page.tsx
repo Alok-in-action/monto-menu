@@ -1,14 +1,13 @@
-
 "use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
-import { MOCK_MENU_DATA, PLACEHOLDER_IMAGE_URL, APP_NAME } from '@/lib/constants';
-import type { MenuCategory, Dish } from '@/types';
+import { MOCK_MENU_DATA, APP_NAME } from '@/lib/constants';
+import type { MenuCategory } from '@/types';
 import { Input } from '@/components/ui/input';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, Phone } from 'lucide-react';
 import { correctMenuQuery } from '@/ai/flows/correct-menu-query';
 import {
   Accordion,
@@ -16,6 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
@@ -42,7 +42,7 @@ export default function MenuPage() {
         ...category,
         dishes: category.dishes.map(dish => ({
           ...dish,
-          imageUrl: dish.imageUrl || PLACEHOLDER_IMAGE_URL,
+          // imageUrl is already handled in constants.ts
           category: category.id,
         }))
       }));
@@ -153,7 +153,7 @@ export default function MenuPage() {
         clearTimeout(scrollTimeoutId.current);
       }
     };
-  }, [menuData, isLoadingMenu, finalSearchQuery, categoryNavWrapperRef, searchQuery, aiCorrectedQuery, isAICorrecting, activeCategoryId]);
+  }, [menuData, isLoadingMenu, categoryNavWrapperRef, activeCategoryId, searchQuery, aiCorrectedQuery, isAICorrecting]);
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
@@ -188,7 +188,7 @@ export default function MenuPage() {
     } else {
       isProgrammaticScroll.current = false; 
     }
-  }, [setActiveCategoryId, categoryNavWrapperRef, isLoadingMenu, finalSearchQuery, isAICorrecting]); 
+  }, [setActiveCategoryId, categoryNavWrapperRef]); 
 
   const hasAnyResults = useMemo(() => {
     if (!finalSearchQuery.trim()) return true;
@@ -216,6 +216,14 @@ export default function MenuPage() {
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
+
+      <Alert className="bg-primary/10 border-primary/20">
+        <Phone className="h-4 w-4 text-primary" />
+        <AlertTitle className="font-bold text-primary">Order by Phone or Online!</AlertTitle>
+        <AlertDescription className="text-foreground/80">
+            Call <a href="tel:7770888407" className="font-semibold underline hover:text-primary/80">7770888407</a> to place an order, or add items to your cart and proceed to checkout for online ordering.
+        </AlertDescription>
+      </Alert>
 
       <Accordion type="single" collapsible className="w-full bg-card rounded-lg shadow p-4">
         <AccordionItem value="terms-and-conditions" className="border-b-0">
