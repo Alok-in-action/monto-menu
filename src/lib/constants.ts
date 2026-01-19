@@ -57,15 +57,6 @@ const generateDishId = (categorySlug: string, dishNameEn: string) => {
 // New, updated menu data structure based on the provided text.
 const MOCK_MENU_DATA_TEMP: MenuCategory[] = [
   {
-    id: slugify('MONTO SPECIAL THALI'),
-    nameEn: 'MONTO SPECIAL THALI',
-    nameHi: 'मोन्टो स्पेशल थाली',
-    icon: CATEGORY_ICONS['MONTO SPECIAL THALI'],
-    dishes: [
-      { id: generateDishId(slugify('MONTO SPECIAL THALI'), 'MONTO SPECIAL THALI'), nameEn: 'MONTO SPECIAL THALI', nameHi: 'मोन्टो स्पेशल थाली', price: 211, description: 'Paneer Sabji, Vegetable, Dal Tadka, Rice, 4 Chapati, Sweet: Rasgulla (1)', category: slugify('MONTO SPECIAL THALI'), imageUrl: '', isVegetarian: true, dataAiHint: 'indian thali meal' },
-    ],
-  },
-  {
     id: slugify('KHANE SE PEHLE TIME PASS'),
     nameEn: 'KHANE SE PEHLE TIME PASS',
     nameHi: 'खाने से पहले टाइम पास',
@@ -621,7 +612,16 @@ const MOCK_MENU_DATA_TEMP: MenuCategory[] = [
       { id: generateDishId(slugify('Momos'), 'Veg Fry Momos (10 pcs)'), nameEn: 'Veg Fry Momos (10 pcs)', nameHi: 'वेज फ्राई मोमोज (10 पीस)', price: 190, category: slugify('Momos'), imageUrl: '', isVegetarian: true, dataAiHint: 'fried momos' },
       { id: generateDishId(slugify('Momos'), 'Steam Momos (10 pcs)'), nameEn: 'Steam Momos (10 pcs)', nameHi: 'स्टीम मोमोज (10 पीस)', price: 180, category: slugify('Momos'), imageUrl: '', isVegetarian: true, dataAiHint: 'steamed momos' },
     ]
-  }
+  },
+  {
+    id: slugify('MONTO SPECIAL THALI'),
+    nameEn: 'MONTO SPECIAL THALI',
+    nameHi: 'मोन्टो स्पेशल थाली',
+    icon: CATEGORY_ICONS['MONTO SPECIAL THALI'],
+    dishes: [
+      { id: generateDishId(slugify('MONTO SPECIAL THALI'), 'MONTO SPECIAL THALI'), nameEn: 'MONTO SPECIAL THALI', nameHi: 'मोन्टो स्पेशल थाली', price: 211, description: 'Paneer Sabji, Vegetable, Dal Tadka, Rice, 4 Chapati, Sweet: Rasgulla (1)', category: slugify('MONTO SPECIAL THALI'), imageUrl: '', isVegetarian: true, dataAiHint: 'indian thali meal' },
+    ],
+  },
 ];
 
 export const MOCK_MENU_DATA: MenuCategory[] = MOCK_MENU_DATA_TEMP.map(category => ({
