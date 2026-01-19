@@ -257,7 +257,7 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                 <h3 className="font-semibold mb-2">Scan to Pay</h3>
                 <p className="text-sm text-muted-foreground mb-4">Please scan the QR code with your UPI app, and send us a screenshot on WhatsApp along with the order message.</p>
                 <Image
-                  src="/file_0000000023f8622fad01a72af91b53f6.png"
+                  src="/IMG-20260109-WA0012.jpg"
                   alt="Payment QR Code"
                   width={250}
                   height={400}
