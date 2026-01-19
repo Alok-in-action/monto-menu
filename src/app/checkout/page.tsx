@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function CheckoutPage() {
   return (
-    <div className="container mx-auto py-8">
+    <div>
       <header className="text-center mb-8">
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Checkout</h1>
         <p className="text-lg text-muted-foreground mt-2">Please provide your details to complete the order.</p>
