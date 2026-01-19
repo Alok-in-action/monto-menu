@@ -47,10 +47,10 @@ export default function CheckoutForm() {
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      phone: '',
-      address: '',
-      landmark: '',
+      name: 'Alok',
+      phone: '7770888407',
+      address: 'chawwni , master colony , bus stand',
+      landmark: 'near bus stand , pani ki tanki',
       specialInstructions: '',
       paymentMethod: 'cod',
     },
@@ -257,10 +257,10 @@ SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
                 <h3 className="font-semibold mb-2">Scan to Pay</h3>
                 <p className="text-sm text-muted-foreground mb-4">Please scan the QR code with your UPI app, and send us a screenshot on WhatsApp along with the order message.</p>
                 <Image
-                  src="https://placehold.co/250x250.png?text=Scan+to+Pay"
+                  src="/file_0000000023f8622fad01a72af91b53f6.png"
                   alt="Payment QR Code"
                   width={250}
-                  height={250}
+                  height={400}
                   className="mx-auto rounded-md shadow"
                 />
               </div>
