@@ -12,13 +12,13 @@ export default function CartPage() {
   const { cartItems } = useCart();
 
   return (
-    <div className="container mx-auto py-8">
-      <header className="text-center mb-8">
+    <div className="py-8">
+      <header className="text-center mb-8 px-4">
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Your Shopping Cart</h1>
       </header>
 
       {cartItems.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-12 px-4">
           <ShoppingBag className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
           <p className="text-xl text-muted-foreground mb-4">Your cart is empty.</p>
           <Button asChild variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground">
@@ -26,7 +26,7 @@ export default function CartPage() {
           </Button>
         </div>
       ) : (
-        <>
+        <div className="px-4">
           <div className="mb-4">
               <Button asChild variant="link" className="text-muted-foreground hover:text-primary px-0">
                   <Link href="/"><ArrowLeft className="mr-2 h-4 w-4" />Continue Shopping</Link>
@@ -52,7 +52,7 @@ export default function CartPage() {
                   <BillSummary />
               </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
