@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 import React, { createContext, useState, useCallback, useMemo } from 'react';
 import type { Dish, CartItemType } from '@/types';
 import { useToast } from "@/hooks/use-toast";
-import { WATER_BOTTLE_DISH } from '@/lib/constants';
 
 interface CartContextType {
   cartItems: CartItemType[];
@@ -21,14 +20,7 @@ interface CartContextType {
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
-    // Initialize with the water bottle
-    const initialWaterBottle: CartItemType = {
-      ...WATER_BOTTLE_DISH,
-      quantity: 1,
-    };
-    return [initialWaterBottle];
-  });
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const { toast } = useToast();
 
   const addItemToCart = useCallback((dish: Dish, quantity: number = 1) => {
@@ -40,13 +32,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
-      }
-      // If adding the auto-added water bottle again, ensure its quantity updates rather than adding a new entry
-      if (dish.id === WATER_BOTTLE_DISH.id) {
-         const waterBottleInCart = prevItems.find(item => item.id === WATER_BOTTLE_DISH.id);
-         if (waterBottleInCart) {
-            return prevItems.map(item => item.id === WATER_BOTTLE_DISH.id ? {...item, quantity: item.quantity + quantity} : item);
-         }
       }
       return [...prevItems, { ...dish, quantity }];
     });
@@ -115,4 +100,3 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     </CartContext.Provider>
   );
 };
-
