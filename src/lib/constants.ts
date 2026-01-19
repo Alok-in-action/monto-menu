@@ -1,8 +1,8 @@
 
-import type { MenuCategory, Dish, OrderType, CartItemType } from '@/types';
+import type { MenuCategory, Dish, CartItemType } from '@/types';
 import { 
-  Soup, Salad, UtensilsCrossed, IndianRupee, ShoppingCart, User, ListOrdered, 
-  CalendarDays, CheckCircle, XCircle, RefreshCw, Disc3, Wheat, CookingPot, 
+  Soup, Salad, UtensilsCrossed, IndianRupee, ShoppingCart, 
+  Disc3, Wheat, CookingPot, 
   Sparkles, Flame, Nut, Grip, Container, CupSoda, Martini, Vegan, Utensils,
   Pizza, Sandwich, Cake
 } from 'lucide-react';
@@ -631,47 +631,6 @@ export const MOCK_MENU_DATA: MenuCategory[] = MOCK_MENU_DATA_TEMP.map(category =
         imageUrl: dish.imageUrl || PLACEHOLDER_IMAGE_URL,
     }))
 }));
-
-const findDishFromNewMenu = (dishId: string): Dish | undefined => {
-  for (const category of MOCK_MENU_DATA) {
-    const foundDish = category.dishes.find(d => d.id === dishId);
-    if (foundDish) return foundDish;
-  }
-  const flatDishes = MOCK_MENU_DATA.flatMap(cat => cat.dishes);
-  return flatDishes.find(d => slugify(d.nameEn) === slugify(dishId.substring(dishId.indexOf('-') + 1)))
-};
-
-const mockOrderDish1 = findDishFromNewMenu(generateDishId(slugify('SOUTH INDIAN FANCY DOSA'), 'Masala Dosa'));
-const mockOrderDish2 = findDishFromNewMenu(generateDishId(slugify('PANEER KA KAMAL'), 'Paneer Butter Masala')); 
-const mockOrderDish3 = findDishFromNewMenu(generateDishId(slugify('MITTI KI KHUSHBU ROTI'), 'Butter Naan'));
-
-
-export const MOCK_ORDERS_DATA: OrderType[] = [
-  {
-    id: 'order1_mock_updated',
-    items: [
-      mockOrderDish1 ? { ...mockOrderDish1, quantity: 2 } : undefined,
-      mockOrderDish2 ? { ...mockOrderDish2, quantity: 1 } : undefined,
-    ].filter(item => item !== undefined) as CartItemType[],
-    totalAmount: (mockOrderDish1 ? mockOrderDish1.price * 2 : 0) + (mockOrderDish2 ? mockOrderDish2.price : 0),
-    tableNumber: '5C',
-    customerName: 'Ms. Anjali Sharma',
-    status: 'Preparing' as OrderType['status'],
-    orderTime: new Date(Date.now() - 25 * 60 * 1000), 
-  },
-  {
-    id: 'order2_mock_updated',
-    items: [
-      mockOrderDish3 ? { ...mockOrderDish3, quantity: 4 } : undefined,
-    ].filter(item => item !== undefined) as CartItemType[],
-    totalAmount: (mockOrderDish3 ? mockOrderDish3.price * 4 : 0),
-    tableNumber: '1A',
-    customerName: 'Mr. Vikram Singh',
-    status: 'Pending' as OrderType['status'],
-    orderTime: new Date(Date.now() - 10 * 60 * 1000),
-  }
-].filter(order => order.items.length > 0); 
-
 
 export const INR_CURRENCY_CODE = 'INR';
 export const INR_SYMBOL = '₹';

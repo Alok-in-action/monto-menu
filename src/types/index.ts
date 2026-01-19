@@ -22,13 +22,3 @@ export interface MenuCategory {
 export interface CartItemType extends Dish {
   quantity: number;
 }
-
-export interface OrderType {
-  id: string;
-  items: CartItemType[];
-  totalAmount: number;
-  tableNumber: string;
-  customerName: string;
-  status: 'Pending' | 'Preparing' | 'Ready' | 'Served';
-  orderTime: Date;
-}

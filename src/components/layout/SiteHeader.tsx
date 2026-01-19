@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image'; // Import next/image
-import { ShoppingCart, ListOrdered } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartIndicator from '@/components/cart/CartIndicator';
 import { APP_NAME } from '@/lib/constants';
@@ -21,11 +21,6 @@ const NavLinks = ({ inSheet = false }: { inSheet?: boolean }) => (
     <Button variant={inSheet ? "ghost" : "link"} asChild className={inSheet ? "w-full justify-start text-lg py-3" : "text-foreground hover:text-primary transition-colors"}>
       <Link href="/cart">
         <ShoppingCart className="mr-2 h-4 w-4" /> Cart
-      </Link>
-    </Button>
-    <Button variant={inSheet ? "ghost" : "link"} asChild className={inSheet ? "w-full justify-start text-lg py-3" : "text-foreground hover:text-primary transition-colors"}>
-      <Link href="/orders">
-        <ListOrdered className="mr-2 h-4 w-4" /> Orders
       </Link>
     </Button>
   </>
