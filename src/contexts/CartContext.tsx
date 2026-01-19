@@ -2,9 +2,11 @@
 "use client";
 
 import type { ReactNode } from 'react';
-import React, { createContext, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useState, useCallback, useMemo, useEffect } from 'react';
 import type { Dish, CartItemType } from '@/types';
 import { useToast } from "@/hooks/use-toast";
+
+const CART_STORAGE_KEY = 'monto-restaurant-cart';
 
 interface CartContextType {
   cartItems: CartItemType[];
@@ -22,6 +24,33 @@ export const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const { toast } = useToast();
+
+  // Load cart from localStorage on initial render
+  useEffect(() => {
+    try {
+      const storedCart = window.localStorage.getItem(CART_STORAGE_KEY);
+      if (storedCart) {
+        setCartItems(JSON.parse(storedCart));
+      }
+    } catch (error) {
+      console.error("Failed to load cart from localStorage", error);
+      // If parsing fails, start with an empty cart
+      setCartItems([]);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    try {
+        // We only want to save if the cart is not in its initial empty state from mount
+        // This prevents overwriting a stored cart with an empty one on the initial render cycle
+      if (cartItems.length > 0 || localStorage.getItem(CART_STORAGE_KEY)) {
+        window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+      }
+    } catch (error) {
+      console.error("Failed to save cart to localStorage", error);
+    }
+  }, [cartItems]);
 
   const addItemToCart = useCallback((dish: Dish, quantity: number = 1) => {
     setCartItems((prevItems) => {
