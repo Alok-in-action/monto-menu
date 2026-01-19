@@ -225,27 +225,6 @@ export default function MenuPage() {
         </AlertDescription>
       </Alert>
 
-      <Accordion type="single" collapsible className="w-full bg-card rounded-lg shadow p-4">
-        <AccordionItem value="terms-and-conditions" className="border-b-0">
-          <AccordionTrigger className="font-headline text-lg hover:no-underline text-primary">
-            नियम व शर्ते (Terms & Conditions)
-          </AccordionTrigger>
-          <AccordionContent>
-            <ul className="list-disc space-y-3 pl-6 text-muted-foreground mt-4">
-              <li>Food पर 5% GST अलग से रहेगा।</li>
-              <li>Food पर Room Service Charge 10% रहेगा।</li>
-              <li>बिना GST बिल नही दिया जायेगा।</li>
-              <li>रेस्टोरेन्ट स्टॉफ से बदत्तमीजी या अशब्द बोलने पर कानूनी कार्यवाही की जायेगी। जिसके जिम्मेदार आप रहेगें।</li>
-              <li>रेस्टोरेन्ट में शोर मचाना व चिल्लाना सख्त मना है।</li>
-              <li>मेन्यु ध्यान से पढ़ें व ऑर्डर देने के बाद ऑर्डर कैंसिल नही होगा।</li>
-              <li>ऑर्डर देने के पश्चात 20 मिनीट का समय देना होगा।</li>
-              <li>अगर आप रेस्टोरेन्ट सर्विस से संतुष्ठ नही है तो शिकायत करें लेकीन शांति एवं सही तरीके से।</li>
-              <li className="font-semibold text-foreground pt-2">धन्यवाद !!</li>
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
       <div
         ref={categoryNavWrapperRef}
         className="sticky top-16 z-40 bg-card shadow-md p-4 space-y-4 rounded-b-lg"
@@ -309,6 +288,26 @@ export default function MenuPage() {
           ))
         )}
       </div>
+      <Accordion type="single" collapsible className="w-full bg-card rounded-lg shadow p-4">
+        <AccordionItem value="terms-and-conditions" className="border-b-0">
+          <AccordionTrigger className="font-headline text-lg hover:no-underline text-primary">
+            नियम व शर्ते (Terms & Conditions)
+          </AccordionTrigger>
+          <AccordionContent>
+            <ul className="list-disc space-y-3 pl-6 text-muted-foreground mt-4">
+              <li>Food पर 5% GST अलग से रहेगा।</li>
+              <li>Food पर Room Service Charge 10% रहेगा।</li>
+              <li>बिना GST बिल नही दिया जायेगा।</li>
+              <li>रेस्टोरेन्ट स्टॉफ से बदत्तमीजी या अशब्द बोलने पर कानूनी कार्यवाही की जायेगी। जिसके जिम्मेदार आप रहेगें।</li>
+              <li>रेस्टोरेन्ट में शोर मचाना व चिल्लाना सख्त मना है।</li>
+              <li>मेन्यु ध्यान से पढ़ें व ऑर्डर देने के बाद ऑर्डर कैंसिल नही होगा।</li>
+              <li>ऑर्डर देने के पश्चात 20 मिनीट का समय देना होगा।</li>
+              <li>अगर आप रेस्टोरेन्ट सर्विस से संतुष्ठ नही है तो शिकायत करें लेकीन शांति एवं सही तरीके से।</li>
+              <li className="font-semibold text-foreground pt-2">धन्यवाद !!</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
