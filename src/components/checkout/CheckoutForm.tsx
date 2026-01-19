@@ -47,10 +47,10 @@ export default function CheckoutForm() {
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: 'Alok',
-      phone: '7770888407',
-      address: 'chawwni , master colony , bus stand',
-      landmark: 'near bus stand , pani ki tanki',
+      name: '',
+      phone: '',
+      address: '',
+      landmark: '',
       specialInstructions: '',
       paymentMethod: 'cod',
     },
