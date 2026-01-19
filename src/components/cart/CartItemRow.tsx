@@ -1,13 +1,10 @@
-
 "use client";
 
-import Image from 'next/image';
 import type { CartItemType } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { IndianRupee, Plus, Minus, Trash2, Leaf, Fish } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { INR_SYMBOL } from '@/lib/constants';
 
 interface CartItemRowProps {
   item: CartItemType;
@@ -21,15 +18,11 @@ export default function CartItemRow({ item }: CartItemRowProps) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between py-4 border-b">
-      <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-        {item.imageUrl && (
-          <div className="relative w-20 h-20 rounded-md overflow-hidden">
-            <Image src={item.imageUrl} alt={item.nameEn} layout="fill" objectFit="cover" data-ai-hint={item.dataAiHint || "food item"}/>
-          </div>
-        )}
+    <div className="py-4">
+      {/* Item details & Remove button */}
+      <div className="flex justify-between items-start gap-4">
         <div>
-          <h3 className="font-semibold text-lg">{item.nameEn}</h3>
+          <h3 className="font-semibold text-lg leading-tight">{item.nameEn}</h3>
           <p className="text-sm text-muted-foreground">{item.nameHi}</p>
           <div className="flex items-center text-sm text-primary mt-1">
             <IndianRupee className="h-4 w-4 mr-1" />
@@ -41,9 +34,13 @@ export default function CartItemRow({ item }: CartItemRowProps) {
             )}
           </div>
         </div>
+        <Button variant="ghost" size="icon" onClick={() => removeItemFromCart(item.id)} className="text-destructive hover:text-destructive/80 flex-shrink-0 -mr-2 -mt-1" aria-label={`Remove ${item.nameEn} from cart`}>
+          <Trash2 className="h-5 w-5" />
+        </Button>
       </div>
-
-      <div className="flex items-center space-x-2 sm:space-x-4">
+      
+      {/* Quantity Controls & Total Price */}
+      <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="icon" onClick={() => handleQuantityChange(item.quantity - 1)} disabled={item.quantity <= 1} aria-label={`Decrease quantity of ${item.nameEn}`}>
             <Minus className="h-4 w-4" />
@@ -51,8 +48,8 @@ export default function CartItemRow({ item }: CartItemRowProps) {
           <Input
             type="number"
             value={item.quantity}
-            onChange={(e) => handleQuantityChange(parseInt(e.target.value, 10))}
-            className="w-16 text-center"
+            readOnly
+            className="w-16 text-center h-10"
             min="1"
             aria-label={`Quantity of ${item.nameEn}`}
           />
@@ -60,13 +57,10 @@ export default function CartItemRow({ item }: CartItemRowProps) {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-        <div className="flex items-center font-semibold text-lg w-24 justify-end">
+        <div className="flex items-center font-semibold text-lg">
           <IndianRupee className="h-5 w-5 mr-1" />
           {(item.price * item.quantity).toFixed(2)}
         </div>
-        <Button variant="ghost" size="icon" onClick={() => removeItemFromCart(item.id)} className="text-destructive hover:text-destructive/80" aria-label={`Remove ${item.nameEn} from cart`}>
-          <Trash2 className="h-5 w-5" />
-        </Button>
       </div>
     </div>
   );

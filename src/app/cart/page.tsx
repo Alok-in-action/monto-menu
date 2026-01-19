@@ -27,22 +27,25 @@ export default function CartPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4 bg-card p-6 rounded-lg shadow">
-            {cartItems.map((item) => (
-              <CartItemRow key={item.id} item={item} />
-            ))}
-          </div>
-          <div className="lg:col-span-1">
-             <Card className="shadow-lg rounded-lg sticky top-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <Card className="lg:col-span-2 shadow-lg rounded-lg">
                 <CardHeader>
-                    <CardTitle className="font-headline text-2xl text-primary">Your Bill</CardTitle>
+                    <CardTitle className="font-headline text-2xl text-primary">Your Items</CardTitle>
                 </CardHeader>
-                <CardContent>
-                    <BillSummary />
+                <CardContent className="p-0">
+                    <div className="divide-y">
+                        {cartItems.map((item) => (
+                            <div className="px-6" key={item.id}>
+                                <CartItemRow item={item} />
+                            </div>
+                        ))}
+                    </div>
                 </CardContent>
             </Card>
-          </div>
+
+            <div className="lg:col-span-1">
+                <BillSummary />
+            </div>
         </div>
       )}
     </div>
