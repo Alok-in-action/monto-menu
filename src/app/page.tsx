@@ -5,7 +5,7 @@ import Image from 'next/image';
 import MenuCategorySection from '@/components/menu/MenuCategorySection';
 import CategoryNavigationBar from '@/components/menu/CategoryNavigationBar';
 import { MOCK_MENU_DATA, APP_NAME } from '@/lib/constants';
-import type { MenuCategory } from '@/types';
+import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2, Phone } from 'lucide-react';
 import { correctMenuQuery } from '@/ai/flows/correct-menu-query';
@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import MenuItemCard from '@/components/menu/MenuItemCard';
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
@@ -108,13 +109,26 @@ export default function MenuPage() {
     if (!searchQuery.trim()) return '';
     return aiCorrectedQuery || searchQuery;
   }, [searchQuery, aiCorrectedQuery]);
+  
+  const searchResults = useMemo(() => {
+    if (!finalSearchQuery.trim() || isLoadingMenu) return [];
+    const normalizedQuery = finalSearchQuery.toLowerCase().trim();
+    return menuData
+      .flatMap(category => category.dishes)
+      .filter(dish =>
+        dish.nameEn.toLowerCase().includes(normalizedQuery) ||
+        dish.nameHi.toLowerCase().includes(normalizedQuery) ||
+        (dish.description && dish.description.toLowerCase().includes(normalizedQuery))
+      );
+  }, [finalSearchQuery, menuData, isLoadingMenu]);
 
 
   useEffect(() => {
-    if (isLoadingMenu || menuData.length === 0) return () => {
+    if (isLoadingMenu || menuData.length === 0 || searchQuery.trim()) {
       if (scrollTimeoutId.current) {
         clearTimeout(scrollTimeoutId.current);
       }
+      return;
     };
 
     const siteHeader = document.querySelector('header[data-site-header="true"]');
@@ -153,7 +167,7 @@ export default function MenuPage() {
         clearTimeout(scrollTimeoutId.current);
       }
     };
-  }, [menuData, isLoadingMenu, categoryNavWrapperRef, activeCategoryId, searchQuery, aiCorrectedQuery, isAICorrecting]);
+  }, [menuData, isLoadingMenu, categoryNavWrapperRef, activeCategoryId, searchQuery]);
 
 
   const handleCategorySelect = useCallback((categoryId: string) => {
@@ -189,19 +203,6 @@ export default function MenuPage() {
       isProgrammaticScroll.current = false; 
     }
   }, [setActiveCategoryId, categoryNavWrapperRef]); 
-
-  const hasAnyResults = useMemo(() => {
-    if (!finalSearchQuery.trim()) return true;
-    if (isLoadingMenu) return true;
-    const normalizedQuery = finalSearchQuery.toLowerCase().trim();
-    return menuData.some(category =>
-      category.dishes.some(dish =>
-        dish.nameEn.toLowerCase().includes(normalizedQuery) ||
-        dish.nameHi.toLowerCase().includes(normalizedQuery) ||
-        (dish.description && dish.description.toLowerCase().includes(normalizedQuery))
-      )
-    );
-  }, [finalSearchQuery, menuData, isLoadingMenu]);
 
   return (
     <div className="space-y-8">
@@ -248,7 +249,7 @@ export default function MenuPage() {
             Showing results for "<strong>{aiCorrectedQuery}</strong>" (corrected from "{searchQuery}")
           </p>
         )}
-        {!isLoadingMenu && menuData.length > 0 && (
+        {!isLoadingMenu && menuData.length > 0 && !searchQuery.trim() && (
           <CategoryNavigationBar
             categories={menuData}
             selectedCategoryId={activeCategoryId}
@@ -266,26 +267,45 @@ export default function MenuPage() {
             <Loader2 className="mx-auto h-24 w-24 text-primary animate-spin mb-4" />
             <p className="text-xl text-muted-foreground">Loading delicious menu items...</p>
           </div>
-        ) : finalSearchQuery.trim() && !hasAnyResults && !isAICorrecting ? (
-          <div className="text-center py-12">
-            <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
-            <p className="text-xl text-muted-foreground">No menu items match your search for: "{searchQuery}"
-              {aiCorrectedQuery && searchQuery.toLowerCase() !== aiCorrectedQuery.toLowerCase() && ` (tried "${aiCorrectedQuery}")`}
-            </p>
-          </div>
-        ) : menuData.length === 0 && !isLoadingMenu ? (
-           <div className="text-center py-12">
-            <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
-            <p className="text-xl text-muted-foreground">No menu items available at the moment. Please check back later!</p>
-          </div>
-        ) : (
+        ) : searchQuery.trim() ? (
+          <>
+            {isAICorrecting ? (
+              <div className="text-center py-12">
+                <Loader2 className="mx-auto h-24 w-24 text-primary animate-spin mb-4" />
+                <p className="text-xl text-muted-foreground">Finding best match...</p>
+              </div>
+            ) : searchResults.length > 0 ? (
+              <section>
+                <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary mb-6">
+                    Search Results
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {searchResults.map((dish) => (
+                        <MenuItemCard key={dish.id} dish={dish} />
+                    ))}
+                </div>
+              </section>
+            ) : (
+               <div className="text-center py-12">
+                <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
+                <p className="text-xl text-muted-foreground">No menu items match your search for: "{searchQuery}"
+                  {aiCorrectedQuery && searchQuery.toLowerCase() !== aiCorrectedQuery.toLowerCase() && ` (tried "${aiCorrectedQuery}")`}
+                </p>
+              </div>
+            )}
+          </>
+        ) : menuData.length > 0 ? (
           menuData.map((category) => (
             <MenuCategorySection
               key={category.id}
               category={category}
-              searchQueryToFilter={finalSearchQuery}
             />
           ))
+        ) : (
+          <div className="text-center py-12">
+            <Search className="mx-auto h-24 w-24 text-muted-foreground mb-4" />
+            <p className="text-xl text-muted-foreground">No menu items available at the moment. Please check back later!</p>
+          </div>
         )}
       </div>
       <Accordion type="single" collapsible className="w-full bg-card rounded-lg shadow p-4">
