@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCart } from '@/hooks/useCart';
@@ -6,7 +5,7 @@ import CartItemRow from '@/components/cart/CartItemRow';
 import BillSummary from '@/components/cart/BillSummary';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function CartPage() {
@@ -27,26 +26,33 @@ export default function CartPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <Card className="lg:col-span-2 shadow-lg rounded-lg">
-                <CardHeader>
-                    <CardTitle className="font-headline text-2xl text-primary">Your Items</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                    <div className="divide-y">
-                        {cartItems.map((item) => (
-                            <div className="px-6" key={item.id}>
-                                <CartItemRow item={item} />
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+        <>
+          <div className="mb-4">
+              <Button asChild variant="link" className="text-muted-foreground hover:text-primary px-0">
+                  <Link href="/"><ArrowLeft className="mr-2 h-4 w-4" />Continue Shopping</Link>
+              </Button>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              <Card className="lg:col-span-2 shadow-lg rounded-lg">
+                  <CardHeader>
+                      <CardTitle className="font-headline text-2xl text-primary">Your Items</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                      <div className="divide-y">
+                          {cartItems.map((item) => (
+                              <div className="px-6" key={item.id}>
+                                  <CartItemRow item={item} />
+                              </div>
+                          ))}
+                      </div>
+                  </CardContent>
+              </Card>
 
-            <div className="lg:col-span-1">
-                <BillSummary />
-            </div>
-        </div>
+              <div className="lg:col-span-1">
+                  <BillSummary />
+              </div>
+          </div>
+        </>
       )}
     </div>
   );

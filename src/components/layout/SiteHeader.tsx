@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image'; // Import next/image
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, CreditCard, Menu as MenuIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartIndicator from '@/components/cart/CartIndicator';
 import { APP_NAME } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu as MenuIcon } from 'lucide-react';
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Separator } from '@/components/ui/separator';
@@ -21,6 +20,11 @@ const NavLinks = ({ inSheet = false }: { inSheet?: boolean }) => (
     <Button variant={inSheet ? "ghost" : "link"} asChild className={inSheet ? "w-full justify-start text-lg py-3" : "text-foreground hover:text-primary transition-colors"}>
       <Link href="/cart">
         <ShoppingCart className="mr-2 h-4 w-4" /> Cart
+      </Link>
+    </Button>
+     <Button variant={inSheet ? "ghost" : "link"} asChild className={inSheet ? "w-full justify-start text-lg py-3" : "text-foreground hover:text-primary transition-colors"}>
+      <Link href="/checkout">
+        <CreditCard className="mr-2 h-4 w-4" /> Checkout
       </Link>
     </Button>
   </>
