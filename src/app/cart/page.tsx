@@ -7,6 +7,7 @@ import BillSummary from '@/components/cart/BillSummary';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function CartPage() {
   const { cartItems } = useCart();
@@ -33,7 +34,14 @@ export default function CartPage() {
             ))}
           </div>
           <div className="lg:col-span-1">
-            <BillSummary />
+             <Card className="shadow-lg rounded-lg sticky top-24">
+                <CardHeader>
+                    <CardTitle className="font-headline text-2xl text-primary">Your Bill</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <BillSummary />
+                </CardContent>
+            </Card>
           </div>
         </div>
       )}

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { IndianRupee } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { Separator } from '@/components/ui/separator';
 import { INR_SYMBOL } from '@/lib/constants';
+import Link from 'next/link';
 
 // Updated tax rates
 const GST_RATE = 0.025; // 2.5%
@@ -18,13 +18,6 @@ export default function BillSummary() {
   const gstAmount = subtotal * GST_RATE;
   const sgstAmount = subtotal * SGST_RATE;
   const totalAmount = subtotal + gstAmount + sgstAmount;
-
-  const handleProceedToCheckout = () => {
-    // In a real app, this would navigate to a checkout page or trigger an order placement flow
-    alert(`Proceeding to checkout with total: ${INR_SYMBOL}${totalAmount.toFixed(2)}`);
-    // Optionally clear cart after checkout simulation
-    // clearCart(); 
-  };
 
   return (
     <Card className="shadow-lg rounded-lg sticky top-24">
@@ -52,12 +45,12 @@ export default function BillSummary() {
       </CardContent>
       <CardFooter className="flex-col space-y-3">
         <Button 
+            asChild
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" 
-            onClick={handleProceedToCheckout}
             disabled={subtotal === 0}
             aria-label="Proceed to checkout"
         >
-          Proceed to Checkout
+          <Link href="/checkout">Proceed to Checkout</Link>
         </Button>
         <Button 
             variant="outline" 
@@ -72,4 +65,3 @@ export default function BillSummary() {
     </Card>
   );
 }
-
