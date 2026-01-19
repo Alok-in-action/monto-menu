@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { INR_SYMBOL } from '@/lib/constants';
 import Link from 'next/link';
 
 // Updated tax rates
-const GST_RATE = 0.025; // 2.5%
+const CGST_RATE = 0.025; // 2.5%
 const SGST_RATE = 0.025; // 2.5%
 const PACKING_CHARGE_RATE = 0.05; // 5%
 
@@ -17,9 +18,9 @@ export default function BillSummary() {
   const { getCartTotal, clearCart } = useCart();
   const subtotal = getCartTotal();
   const packingCharges = subtotal * PACKING_CHARGE_RATE;
-  const gstAmount = subtotal * GST_RATE;
+  const cgstAmount = subtotal * CGST_RATE;
   const sgstAmount = subtotal * SGST_RATE;
-  const totalAmount = subtotal + packingCharges + gstAmount + sgstAmount;
+  const totalAmount = subtotal + packingCharges + cgstAmount + sgstAmount;
 
   return (
     <Card className="shadow-lg rounded-lg sticky top-24">
@@ -36,8 +37,8 @@ export default function BillSummary() {
           <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{packingCharges.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
-          <span>GST ({(GST_RATE * 100).toFixed(1)}%)</span>
-          <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{gstAmount.toFixed(2)}</span>
+          <span>CGST ({(CGST_RATE * 100).toFixed(1)}%)</span>
+          <span className="flex items-center"><IndianRupee className="h-4 w-4 mr-1" />{cgstAmount.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span>SGST ({(SGST_RATE * 100).toFixed(1)}%)</span>
