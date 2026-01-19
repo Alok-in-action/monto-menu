@@ -14,7 +14,11 @@ const CGST_RATE = 0.025; // 2.5%
 const SGST_RATE = 0.025; // 2.5%
 const PACKING_CHARGE_RATE = 0.05; // 5%
 
-export default function BillSummary() {
+interface BillSummaryProps {
+  isCheckoutPage?: boolean;
+}
+
+export default function BillSummary({ isCheckoutPage = false }: BillSummaryProps) {
   const { getCartTotal, clearCart } = useCart();
   const subtotal = getCartTotal();
   const packingCharges = subtotal * PACKING_CHARGE_RATE;
@@ -25,7 +29,9 @@ export default function BillSummary() {
   return (
     <Card className="shadow-lg rounded-lg sticky top-24">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl text-primary">Bill Summary</CardTitle>
+        <CardTitle className="font-headline text-2xl text-primary">
+          {isCheckoutPage ? 'Your Final Bill' : 'Bill Summary'}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex justify-between">
@@ -51,14 +57,16 @@ export default function BillSummary() {
         </div>
       </CardContent>
       <CardFooter className="flex-col space-y-3">
-        <Button 
-            asChild
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" 
-            disabled={subtotal === 0}
-            aria-label="Proceed to checkout"
-        >
-          <Link href="/checkout">Proceed to Checkout</Link>
-        </Button>
+        {!isCheckoutPage && (
+          <Button 
+              asChild
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" 
+              disabled={subtotal === 0}
+              aria-label="Proceed to checkout"
+          >
+            <Link href="/checkout">Proceed to Checkout</Link>
+          </Button>
+        )}
         <Button 
             variant="outline" 
             className="w-full" 

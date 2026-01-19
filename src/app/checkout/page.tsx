@@ -12,19 +12,12 @@ export default function CheckoutPage() {
         <p className="text-lg text-muted-foreground mt-2">Please provide your details to complete the order.</p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <div className="md:col-span-2">
            <CheckoutForm />
         </div>
-        <div className="lg:col-span-1">
-            <Card className="shadow-lg rounded-lg sticky top-24">
-                <CardHeader>
-                    <CardTitle className="font-headline text-2xl text-primary">Your Final Bill</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <BillSummary />
-                </CardContent>
-            </Card>
+        <div className="md:col-span-1">
+            <BillSummary isCheckoutPage={true} />
         </div>
       </div>
     </div>
