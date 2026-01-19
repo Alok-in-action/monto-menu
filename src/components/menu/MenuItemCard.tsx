@@ -1,24 +1,22 @@
-
 "use client";
 
 import type { Dish } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { IndianRupee, Leaf, Fish, PlusCircle } from 'lucide-react';
+import { IndianRupee, Leaf, Fish, PlusCircle, Check } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { INR_SYMBOL } from '@/lib/constants';
-// Image and PLACEHOLDER_IMAGE_URL are no longer needed if the image section is removed.
+import { cn } from '@/lib/utils';
 
 interface MenuItemCardProps {
   dish: Dish;
 }
 
 export default function MenuItemCard({ dish }: MenuItemCardProps) {
-  const { addItemToCart } = useCart();
+  const { addItemToCart, isItemInCart } = useCart();
+  const isInCart = isItemInCart(dish.id);
 
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg">
-      {/* Image section removed */}
       <CardHeader className="pb-2 pt-4">
         <CardTitle className="font-headline text-xl md:text-2xl">{dish.nameEn}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">{dish.nameHi}</CardDescription>
@@ -39,13 +37,14 @@ export default function MenuItemCard({ dish }: MenuItemCardProps) {
       </CardContent>
       <CardFooter>
         <Button 
-          variant="default" 
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+          variant={isInCart ? "secondary" : "default"}
+          className={cn("w-full", !isInCart && "bg-accent hover:bg-accent/90 text-accent-foreground")}
           onClick={() => addItemToCart(dish)}
-          aria-label={`Add ${dish.nameEn} to cart`}
+          disabled={isInCart}
+          aria-label={isInCart ? `${dish.nameEn} is in your cart` : `Add ${dish.nameEn} to cart`}
         >
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Add
+          {isInCart ? <Check className="mr-2 h-5 w-5" /> : <PlusCircle className="mr-2 h-5 w-5" />}
+          {isInCart ? 'Added' : 'Add'}
         </Button>
       </CardFooter>
     </Card>

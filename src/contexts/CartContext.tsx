@@ -64,21 +64,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return [...prevItems, { ...dish, quantity }];
     });
-    toast({
-      title: `${dish.nameEn} added to cart!`,
-      description: `${quantity} item(s) added.`,
-      variant: "default",
-    });
-  }, [toast]);
+  }, []);
 
   const removeItemFromCart = useCallback((dishId: string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== dishId));
-     toast({
-      title: "Item removed",
-      description: "The item has been removed from your cart.",
-      variant: "destructive",
-    });
-  }, [toast]);
+  }, []);
 
   const updateItemQuantity = useCallback((dishId: string, quantity: number) => {
     if (quantity <= 0) {
@@ -94,11 +84,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = useCallback(() => {
     setCartItems([]);
-    toast({
-      title: "Cart cleared",
-      description: "All items have been removed from your cart.",
-    });
-  }, [toast]);
+  }, []);
 
   const getCartTotal = useCallback(() => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);

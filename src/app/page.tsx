@@ -37,22 +37,19 @@ export default function MenuPage() {
 
   useEffect(() => {
     setIsLoadingMenu(true);
-    // Simulate API call to load mock data
-    setTimeout(() => {
-      const dataWithPlaceholders = MOCK_MENU_DATA.map(category => ({
-        ...category,
-        dishes: category.dishes.map(dish => ({
-          ...dish,
-          // imageUrl is already handled in constants.ts
-          category: category.id,
-        }))
-      }));
-      setMenuData(dataWithPlaceholders);
-      if (dataWithPlaceholders.length > 0) {
-        setActiveCategoryId(dataWithPlaceholders[0].id);
-      }
-      setIsLoadingMenu(false);
-    }, 500);
+    const dataWithPlaceholders = MOCK_MENU_DATA.map(category => ({
+      ...category,
+      dishes: category.dishes.map(dish => ({
+        ...dish,
+        // imageUrl is already handled in constants.ts
+        category: category.id,
+      }))
+    }));
+    setMenuData(dataWithPlaceholders);
+    if (dataWithPlaceholders.length > 0) {
+      setActiveCategoryId(dataWithPlaceholders[0].id);
+    }
+    setIsLoadingMenu(false);
   }, []);
 
 
