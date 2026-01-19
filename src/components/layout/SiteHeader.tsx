@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -11,6 +10,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu as MenuIcon } from 'lucide-react';
 import React from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Separator } from '@/components/ui/separator';
 
 const NavLinks = ({ inSheet = false }: { inSheet?: boolean }) => (
   <>
@@ -28,6 +29,29 @@ const NavLinks = ({ inSheet = false }: { inSheet?: boolean }) => (
       </Link>
     </Button>
   </>
+);
+
+const TermsAndConditionsAccordion = () => (
+    <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="terms-and-conditions" className="border-b-0">
+        <AccordionTrigger className="py-3 text-base font-medium text-muted-foreground hover:no-underline hover:text-primary">
+            नियम व शर्ते (T&C)
+        </AccordionTrigger>
+        <AccordionContent>
+            <ul className="list-disc space-y-2.5 pl-5 text-sm text-muted-foreground mt-2">
+                <li>Food पर 5% GST अलग से रहेगा।</li>
+                <li>Food पर Room Service Charge 10% रहेगा।</li>
+                <li>बिना GST बिल नही दिया जायेगा।</li>
+                <li>रेस्टोरेन्ट स्टॉफ से बदत्तमीजी या अशब्द बोलने पर कानूनी कार्यवाही की जायेगी।</li>
+                <li>रेस्टोरेन्ट में शोर मचाना व चिल्लाना सख्त मना है।</li>
+                <li>मेन्यु ध्यान से पढ़ें व ऑर्डर देने के बाद ऑर्डर कैंसिल नही होगा।</li>
+                <li>ऑर्डर देने के पश्चात 20 मिनीट का समय देना होगा।</li>
+                <li>अगर आप रेस्टोरेन्ट सर्विस से संतुष्ठ नही है तो शिकायत करें लेकीन शांति एवं सही तरीके से।</li>
+                <li className="font-semibold text-foreground/90 pt-1">धन्यवाद !!</li>
+            </ul>
+        </AccordionContent>
+        </AccordionItem>
+  </Accordion>
 );
 
 
@@ -57,9 +81,13 @@ export default function SiteHeader() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full max-w-xs p-6">
+              <SheetContent side="right" className="w-full max-w-xs p-6 flex flex-col">
                 <div className="flex flex-col space-y-4 mt-6">
                  <NavLinks inSheet={true} />
+                </div>
+                <div className="mt-auto">
+                    <Separator className="my-4"/>
+                    <TermsAndConditionsAccordion />
                 </div>
               </SheetContent>
             </Sheet>
