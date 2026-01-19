@@ -10,6 +10,12 @@ import type { MenuCategory, Dish } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
 import { correctMenuQuery } from '@/ai/flows/correct-menu-query';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const SCROLL_OFFSET_PRECISION = 1; // px, adjustment for scroll/observer alignment.
 
@@ -210,6 +216,27 @@ export default function MenuPage() {
         <h1 className="font-headline text-4xl md:text-5xl font-bold text-primary">Our Menu</h1>
         <p className="text-lg text-muted-foreground mt-2">Explore our delicious offerings</p>
       </header>
+
+      <Accordion type="single" collapsible className="w-full bg-card rounded-lg shadow p-4">
+        <AccordionItem value="terms-and-conditions" className="border-b-0">
+          <AccordionTrigger className="font-headline text-lg hover:no-underline text-primary">
+            नियम व शर्ते (Terms & Conditions)
+          </AccordionTrigger>
+          <AccordionContent>
+            <ul className="list-disc space-y-3 pl-6 text-muted-foreground mt-4">
+              <li>Food पर 5% GST अलग से रहेगा।</li>
+              <li>Food पर Room Service Charge 10% रहेगा।</li>
+              <li>बिना GST बिल नही दिया जायेगा।</li>
+              <li>रेस्टोरेन्ट स्टॉफ से बदत्तमीजी या अशब्द बोलने पर कानूनी कार्यवाही की जायेगी। जिसके जिम्मेदार आप रहेगें।</li>
+              <li>रेस्टोरेन्ट में शोर मचाना व चिल्लाना सख्त मना है।</li>
+              <li>मेन्यु ध्यान से पढ़ें व ऑर्डर देने के बाद ऑर्डर कैंसिल नही होगा।</li>
+              <li>ऑर्डर देने के पश्चात 20 मिनीट का समय देना होगा।</li>
+              <li>अगर आप रेस्टोरेन्ट सर्विस से संतुष्ठ नही है तो शिकायत करें लेकीन शांति एवं सही तरीके से।</li>
+              <li className="font-semibold text-foreground pt-2">धन्यवाद !!</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <div
         ref={categoryNavWrapperRef}
