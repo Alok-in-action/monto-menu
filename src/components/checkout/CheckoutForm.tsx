@@ -37,6 +37,7 @@ type CheckoutFormValues = z.infer<typeof formSchema>;
 // Tax rates
 const GST_RATE = 0.025;
 const SGST_RATE = 0.025;
+const PACKING_CHARGE_RATE = 0.05; // 5%
 
 export default function CheckoutForm() {
   const { cartItems, getCartTotal, clearCart } = useCart();
@@ -70,9 +71,10 @@ export default function CheckoutForm() {
       setIsSubmitting(false);
       return;
     }
+    const packingCharges = subtotal * PACKING_CHARGE_RATE;
     const gstAmount = subtotal * GST_RATE;
     const sgstAmount = subtotal * SGST_RATE;
-    const totalAmount = subtotal + gstAmount + sgstAmount;
+    const totalAmount = subtotal + packingCharges + gstAmount + sgstAmount;
 
     // 1. Format order items
     const orderItemsText = cartItems
@@ -103,6 +105,7 @@ ${orderItemsText}
 
 *Bill Details:*
 Subtotal: ${INR_SYMBOL}${subtotal.toFixed(2)}
+Packing Charges (5%): ${INR_SYMBOL}${packingCharges.toFixed(2)}
 GST (2.5%): ${INR_SYMBOL}${gstAmount.toFixed(2)}
 SGST (2.5%): ${INR_SYMBOL}${sgstAmount.toFixed(2)}
 *Grand Total: ${INR_SYMBOL}${totalAmount.toFixed(2)}*
